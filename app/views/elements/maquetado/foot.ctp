@@ -1,0 +1,1 @@
+<strong>SIGEM <?php echo Configure::read('APLICACION.version')?></strong> @2009-<?php echo date('Y')?> All Right Reserved

@@ -1,0 +1,8 @@
+CREATE DEFINER=`mutual22`@`%` PROCEDURE `p_insertar_localidad`(
+IN vCP VARCHAR(4), vNOMBRE VARCHAR(150),vPROVINCIA_ID INT(11), vLETRA_PROVINCIA VARCHAR(1),
+vUSER_CREATED VARCHAR(50)
+)
+BEGIN
+INSERT INTO localidades(cp,nombre,provincia_id,letra_provincia,user_created,created)
+VALUES (vCP,UPPER(vNOMBRE),vPROVINCIA_ID,vLETRA_PROVINCIA,vUSER_CREATED,NOW());
+END

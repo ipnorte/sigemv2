@@ -1,0 +1,1 @@
+<?php echo $controles->openWindow($texto,'/mutual/orden_descuento_cuotas/estado_cuenta2/'.$socio_id.'/1')?>

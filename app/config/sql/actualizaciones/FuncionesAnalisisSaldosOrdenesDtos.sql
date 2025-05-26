@@ -1,0 +1,233 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ * Author:  adrian
+ * Created: 04/05/2019
+ */
+
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_CANT_CUOTAS`;
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_DEVENGADO`;
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_PAGO_ACUMULADO`;
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_PENDIENTE_ACREDITAR`;
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_SALDO_A_VENCER_POR_RANGO`;
+DROP FUNCTION IF EXISTS `FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO`;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_CANT_CUOTAS`(vORDEN_ID INT,vPERIODO CHAR(6),vTIPO CHAR(3)) RETURNS int(11)
+BEGIN
+declare vCANTIDAD INT(11) DEFAULT 0;
+
+IF vTIPO = 'ANU' THEN
+SELECT count(*) INTO vCANTIDAD FROM orden_descuento_cuotas WHERE 
+orden_descuento_id = vORDEN_ID and estado IN ('B','D');
+END IF;
+
+IF vTIPO = 'TOT' THEN
+SELECT count(*) INTO vCANTIDAD FROM orden_descuento_cuotas WHERE 
+orden_descuento_id = vORDEN_ID and estado NOT IN ('B','D');
+END IF;
+
+IF vTIPO = 'VEN' THEN
+SELECT count(*) INTO vCANTIDAD FROM orden_descuento_cuotas WHERE 
+orden_descuento_id = vORDEN_ID AND periodo <= vPERIODO and estado NOT IN ('B','D')
+AND importe > IFNULL((
+                SELECT SUM(cocu.importe) from
+                orden_descuento_cobro_cuotas cocu
+                INNER JOIN orden_descuento_cobros co 
+                ON (co.id = cocu.orden_descuento_cobro_id) 
+                WHERE 
+                cocu.orden_descuento_cuota_id = orden_descuento_cuotas.id
+                AND co.periodo_cobro <= vPERIODO),0);
+END IF;
+
+IF vTIPO = 'NVE' THEN
+SELECT count(*) INTO vCANTIDAD FROM orden_descuento_cuotas WHERE 
+orden_descuento_id = vORDEN_ID AND periodo > vPERIODO and estado NOT IN ('B','D')
+AND importe > IFNULL((
+                SELECT SUM(cocu.importe) from
+                orden_descuento_cobro_cuotas cocu
+                INNER JOIN orden_descuento_cobros co 
+                ON (co.id = cocu.orden_descuento_cobro_id) 
+                WHERE 
+                cocu.orden_descuento_cuota_id = orden_descuento_cuotas.id),0);
+END IF;
+
+RETURN vCANTIDAD;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_DEVENGADO`(vORDEN_ID INT,vPERIODO CHAR(6),vTIPO CHAR(3)) RETURNS decimal(10,2)
+BEGIN
+DECLARE vSALDO DECIMAL(10,2) DEFAULT 0;
+if vTIPO = 'ANU' then
+SELECT ifnull(SUM(importe),0) into vSALDO FROM orden_descuento_cuotas WHERE 
+                orden_descuento_id = vORDEN_ID and estado IN ('B','D');
+end if;
+if vTIPO = 'TOT' then
+SELECT ifnull(SUM(importe),0) into vSALDO FROM orden_descuento_cuotas WHERE 
+                orden_descuento_id = vORDEN_ID and estado NOT IN ('B','D');
+end if;
+if vTIPO = 'PER' then
+SELECT ifnull(SUM(importe),0) into vSALDO FROM orden_descuento_cuotas WHERE 
+                orden_descuento_id = vORDEN_ID AND periodo <= vPERIODO and estado NOT IN ('B','D');
+end if;
+RETURN vSALDO;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_PAGO_ACUMULADO`(vORDEN_ID INT,vPERIODO CHAR(6),vTIPO CHAR(3)) RETURNS decimal(10,2)
+BEGIN
+DECLARE vPAGO_ACUMULADO DECIMAL(10,2) DEFAULT 0;
+
+-- cobrado total al periodo
+if vTIPO = 'TOT' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id and cc.orden_descuento_cobro_id = co.id and
+    co.periodo_cobro <= vPERIODO
+    group by cu.orden_descuento_id;
+end if;
+
+-- cobrado a termino
+if vTIPO = 'TER' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id and cc.orden_descuento_cobro_id = co.id and
+    co.periodo_cobro = cu.periodo
+    and co.periodo_cobro <= vPERIODO
+    group by cu.orden_descuento_id;
+end if;
+
+-- cobrado vencido
+if vTIPO = 'VEN' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id and cc.orden_descuento_cobro_id = co.id and
+    co.periodo_cobro <> cu.periodo
+    and co.periodo_cobro <= vPERIODO
+    group by cu.orden_descuento_id;
+end if;
+
+-- PAGADO POR CANCELACION
+if vTIPO = 'CAN' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id 
+    and cc.orden_descuento_cobro_id = co.id 
+    and co.periodo_cobro <= vPERIODO
+    and ifnull(co.cancelacion_orden_id,0) <> 0
+    group by cu.orden_descuento_id;
+end if;
+-- PAGADO POR CAJA
+if vTIPO = 'CAJ' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id 
+    and cc.orden_descuento_cobro_id = co.id 
+    and co.periodo_cobro <= vPERIODO
+    and ifnull(co.cancelacion_orden_id,0) = 0
+    and co.id not in (select co.id from orden_descuento_cobros co
+                inner join liquidacion_socio_rendiciones lsr on lsr.socio_id = co.socio_id
+                and lsr.orden_descuento_cobro_id = co.id
+                where ifnull(cancelacion_orden_id,0) = 0
+                group by co.id)
+    group by cu.orden_descuento_id;
+end if;
+-- PAGADO POR LIQUIDACION
+if vTIPO = 'LIQ' then
+    select IFNULL(sum(cc.importe),0) INTO vPAGO_ACUMULADO
+    from orden_descuento_cobro_cuotas cc, orden_descuento_cobros co,orden_descuento_cuotas cu 
+    where 
+    cu.orden_descuento_id = vORDEN_ID
+    and cc.orden_descuento_cuota_id = cu.id 
+    and cc.orden_descuento_cobro_id = co.id 
+    and co.periodo_cobro <= vPERIODO
+    and ifnull(co.cancelacion_orden_id,0) = 0
+    and co.id in (select co.id from orden_descuento_cobros co
+                inner join liquidacion_socio_rendiciones lsr on lsr.socio_id = co.socio_id
+                and lsr.orden_descuento_cobro_id = co.id
+                where ifnull(cancelacion_orden_id,0) = 0
+                group by co.id)
+    group by cu.orden_descuento_id;
+end if;
+
+RETURN vPAGO_ACUMULADO;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_PENDIENTE_ACREDITAR`(vORDEN_ID INT,vPERIODO CHAR(6)) RETURNS decimal(10,2)
+BEGIN
+DECLARE vPENDIENTE DECIMAL(10,2);
+SET vPENDIENTE = 0;
+SELECT ROUND(ifnull(SUM(importe_debitado),0),2) INTO vPENDIENTE FROM liquidacion_cuotas lc
+inner join liquidaciones l on l.id = lc.liquidacion_id and l.periodo <=  vPERIODO
+WHERE orden_descuento_id = vORDEN_ID
+AND orden_descuento_cobro_id = 0 and mutual_adicional_pendiente_id = 0;
+RETURN vPENDIENTE;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_SALDO_A_VENCER_POR_RANGO`(vORDEN_ID INT,vPERIODO CHAR(6),vDESDE INT,vHASTA INT) RETURNS decimal(10,2)
+BEGIN
+declare vSALDO DECIMAL(10,2) default 0;
+select IFNULL(sum(cu.importe),0) INTO vSALDO from orden_descuento_cuotas cu
+WHERE cu.orden_descuento_id = vORDEN_ID
+    AND cu.periodo > date_format(date_add(STR_TO_DATE(CONCAT(vPERIODO,'01'),'%Y%m%d'), interval vDESDE month),'%Y%m') 
+and cu.periodo <= date_format(date_add(date_add(STR_TO_DATE(CONCAT(vPERIODO,'01'),'%Y%m%d'), interval vDESDE month),interval vHASTA month),'%Y%m')
+and cu.estado NOT IN ('B','D','C')
+    AND cu.importe > ((SELECT IFNULL(SUM(cocu.importe),0) FROM orden_descuento_cobro_cuotas cocu
+    INNER JOIN orden_descuento_cobros co ON (co.id = cocu.orden_descuento_cobro_id)
+    WHERE 
+    cocu.orden_descuento_cuota_id = cu.id 
+    AND co.periodo_cobro <= vPERIODO) + ifnull((SELECT ROUND(ifnull(SUM(importe_debitado),0),2) AS importe_debitado FROM liquidacion_cuotas lc
+        inner join liquidaciones l on l.id = lc.liquidacion_id and l.periodo <= vPERIODO
+    WHERE orden_descuento_cuota_id = cu.id
+    AND orden_descuento_cobro_id = 0 and mutual_adicional_pendiente_id = 0
+    order by liquidacion_id desc limit 1 ),0))
+    GROUP BY cu.orden_descuento_id;
+RETURN vSALDO;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO`(vORDEN_ID INT,vPERIODO CHAR(6),vDESDE INT,vHASTA INT) RETURNS decimal(10,2)
+BEGIN
+DECLARE vSALDO DECIMAL(10,2) DEFAULT 0;
+
+SELECT ifnull((SELECT SUM(importe) - SUM(ifnull((select sum(cc.importe) from orden_descuento_cobro_cuotas cc
+                where orden_descuento_cuotas.id = cc.orden_descuento_cuota_id
+                and cc.periodo_cobro <= vPERIODO),0)) - SUM(ifnull((
+                 select sum(importe_debitado) from liquidacion_cuotas lc
+                where lc.orden_descuento_cuota_id = orden_descuento_cuotas.id and lc.imputada = 0 and 
+                    lc.para_imputar = 1 and lc.periodo_cuota <= vPERIODO 
+                    and ifnull(lc.orden_descuento_cobro_id,0) = 0)
+                 ,0)) FROM orden_descuento_cuotas WHERE 
+                orden_descuento_id = vORDEN_ID 
+                AND periodo > date_format(date_sub(date_format(concat(vPERIODO,'01'),'%Y-%m-%d'), interval vHASTA month),'%Y%m')
+                AND periodo <= date_format(date_sub(date_format(concat(vPERIODO,'01'),'%Y-%m-%d'), interval vDESDE month),'%Y%m')
+                and estado NOT IN ('B','D') and importe > ifnull((select sum(cc.importe) from orden_descuento_cobro_cuotas cc
+                where orden_descuento_cuotas.id = cc.orden_descuento_cuota_id
+                and cc.periodo_cobro <= vPERIODO),0)),0) INTO vSALDO;
+
+RETURN vSALDO;
+END$$
+DELIMITER ;
+
+

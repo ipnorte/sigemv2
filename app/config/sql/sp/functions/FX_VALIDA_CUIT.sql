@@ -1,0 +1,46 @@
+DELIMITER $$
+CREATE DEFINER=current_user FUNCTION `FX_VALIDA_CUIT`(CUIT BIGINT) RETURNS tinyint(1)
+    DETERMINISTIC
+BEGIN
+DECLARE RES, DIG, NUM BIGINT;
+DECLARE i INT;
+
+IF LENGTH(CUIT) != 11 OR SUBSTR(CUIT, 1, 2) = '00' THEN
+RETURN FALSE;
+END IF;
+
+SET RES = 0;
+SET i = 1;
+WHILE i < 11 DO
+    SET NUM = (SUBSTR(CUIT, I, 1));
+
+    IF (i = 1 OR i = 7) THEN
+        SET RES = RES + NUM * 5;
+    ELSEIF (I = 2 OR I = 8) THEN
+        SET RES = RES + NUM * 4;
+    ELSEIF (I = 3 OR I = 9) THEN
+        SET RES = RES + NUM * 3;
+    ELSEIF (I = 4 OR I = 10) THEN
+        SET RES = RES + NUM * 2;
+    ELSEIF (I = 5) THEN
+        SET RES = RES + NUM * 7;
+    ELSEIF (I = 6) THEN
+        SET RES = RES + NUM * 6;
+    END IF;
+    SET i = i+1;
+END WHILE;
+
+
+SET DIG = 11 - MOD(RES,11);
+IF DIG = 11 THEN
+    SET DIG = 0;
+END IF;
+
+IF DIG = (SUBSTR(CUIT,11,1)) THEN
+    RETURN TRUE;
+ELSE
+    RETURN FALSE;
+END IF;
+
+END$$
+DELIMITER ;

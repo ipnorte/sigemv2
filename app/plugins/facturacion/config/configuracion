@@ -1,0 +1,92 @@
+DROP TABLE IF EXISTS facturas;
+CREATE TABLE `facturas` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `fecha_comprobante` DATE DEFAULT NULL,
+  `persona_id` INT(11) NOT NULL,
+  `orden_descuento_cobro_id` INT(11) DEFAULT NULL,
+  `punto_venta` INT(5) NOT NULL,
+  `numero_comprobante` INT(12) NOT NULL,
+  `tipo_comprobante` INT(3) NOT NULL,
+  `codigo_concepto` INT(1) NOT NULL,
+  `tipo_documento` INT(3) NOT NULL,
+  `numero_documento` VARCHAR(11) DEFAULT NULL,
+  `fecha_desde` DATE DEFAULT NULL,
+  `fecha_hasta` DATE DEFAULT NULL,
+  `fecha_vto_pago` DATE DEFAULT NULL,
+  `codigo_moneda` VARCHAR(3) DEFAULT 'PES',
+  `resultado` VARCHAR(1) DEFAULT NULL,
+  `codigo_autorizacion` VARCHAR(20) DEFAULT NULL,
+  `tipo_emision` VARCHAR(6) DEFAULT 'CAE',
+  `cae_fecha_vto` DATE DEFAULT NULL,
+  `cae_fecha_proceso` DATETIME DEFAULT NULL,
+  `e_codigo` INT(8) DEFAULT NULL,
+  `e_mensaje` VARCHAR(200) DEFAULT NULL,
+  `importe_total` DECIMAL(15,2) DEFAULT '0.00',
+  `importe_total_concepto` DECIMAL(15,2) DEFAULT '0.00',
+  `importe_neto` DECIMAL(15,2) DEFAULT '0.00',
+  `importe_exento` DECIMAL(15,2) DEFAULT '0.00',
+  `importe_iva` DECIMAL(15,2) DEFAULT '0.00',
+  `importe_tributo` DECIMAL(15,2) DEFAULT '0.00',
+  `user_created` VARCHAR(50) DEFAULT NULL,
+  `user_modified` VARCHAR(50) DEFAULT NULL,
+  `create` DATETIME DEFAULT NULL,
+  `modified` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci;
+
+ALTER TABLE `cordobas_rvsa`.`facturas` CHANGE `numero_documento` `numero_documento` VARCHAR(11) NULL;
+ALTER TABLE `orden_descuento_cobro_cuotas` ADD COLUMN `factura_id` INT(11) DEFAULT 0 NULL AFTER `banco_cuenta_movimiento_id`, ADD COLUMN `reverso_factura_id` INT(11) DEFAULT 0 NULL AFTER `factura_id`; 
+
+/* No anda
+ALTER TABLE `orden_descuento_cobro_cuotas` ADD CONSTRAINT `FX_orden_descuento_cobro_cuotas_factura` FOREIGN KEY (`factura_id`) REFERENCES `sigem_db`.`facturas`(`id`); 
+*/
+
+INSERT INTO `permisos` (`id`, `descripcion`, `url`, `order`, `main`, `icon`) VALUES ('900', 'Facturacion', '/facturacion', '900', '1', 'profiler.gif'); 
+INSERT INTO `grupos_permisos` (`grupo_id`, `permiso_id`) VALUES ('1', '900'); 
+
+INSERT INTO `permisos` (`id`, `descripcion`, `url`, `order`, `main`, `icon`, `parent`) VALUES ('910', 'Facturacion Electrónica WS', '/facturacion/facturaciones/facturacion_electronica', '910', '1', 'arrow_right2.gif', '900'); 
+INSERT INTO `grupos_permisos` (`grupo_id`, `permiso_id`) VALUES ('1', '910'); 
+
+INSERT INTO `permisos` (`id`, `descripcion`, `url`, `order`, `main`, `icon`, `parent`) VALUES ('912', 'Informe e Impresion Doc. AFIP', '/facturacion/facturaciones/facturacion_informe', '912', '1', 'arrow_right2.gif', '900'); 
+INSERT INTO `grupos_permisos` (`grupo_id`, `permiso_id`) VALUES ('1', '912'); 
+
+
+/*
+DEFINIR EN EL GLOBAL DATOS EN EL ID = 'PERSTIVA0005'
+EN LOS CAMPOS:
+entero_1 = 'codigo de factura de la afip' ejemplo 6
+entero_2 = 'codigo de nota de debito de la afip' ejemplo 7
+decimal_1 = 'codigo de nota de credito de la afip' ejemplo 8
+
+========================================================
+TABLA TIPO_DOCUMENTO INSERTAR TRES REGISTROS DEPENDIENDO DE LO DEFINIDO EN LA TABLA GLOBAL PARA CADA CONDICION DE IVA.
+SIGUIENDO EL EJEMPLO ANTERIOR SERIA:
+*/ 
+INSERT INTO `tipo_documentos` (`tipo_documento`, `documento`, `descripcion`, `letra`, `sucursal`) VALUES ('FAC', '6', 'FACTURA', 'B', '1'); 
+INSERT INTO `tipo_documentos` (`tipo_documento`, `documento`, `descripcion`, `letra`, `sucursal`) VALUES ('NDE', '7', 'NOTA DE DEBITO', 'B', '1'); 
+INSERT INTO `tipo_documentos` (`tipo_documento`, `documento`, `descripcion`, `letra`, `sucursal`) VALUES ('NCR', '8', 'NOTA DE CREDITO', 'B', '1'); 
+
+
+/*
+EN LA TABLA GLOBAL_DATOS SE DEBE DEFINIR LOS CERTIFICADOS PARA LA CONEXION CON EL WEB SERVICE DE LA AFIP Y EL MODO
+EN QUE SE VA A CONECTAR SI ES PRODUCCION U HOMOLOGADO.
+*/
+
+INSERT INTO `global_datos` (`id`, `concepto_1`) VALUES ("WEBSAFIP", "WEB SERVICES AFIP DATOS CONEXION")
+INSERT INTO `global_datos` (`id`, `concepto_1`, `concepto_2`) VALUES ("WEBSAFIPCERT", "Archivo-Certificado.crt", "CERTIFICADO DE PRODUCCION")
+INSERT INTO `global_datos` (`id`, `concepto_1`, `concepto_2`) VALUES ("WEBSAFIPCLAV", "Archivo-Key.key", "CLAVE DE ACCESO (KEY)")
+INSERT INTO `global_datos` (`id`, `concepto_1`, `concepto_2`) VALUES ("WEBSAFIPCPEM", "Archivo-Homologado.pem", "CERTIFICADO DE HOMOLOGACION")
+INSERT INTO `global_datos` (`id`, `concepto_1`, `concepto_2`, `concepto_3`, `concepto_4`) VALUES ("WEBSAFIPCUIT",	"CUIT DE LA EMPRESA, MUTUAL O ENTIDAD",	"nro de cuit", "razon social", "Descripcion tipo de IVA")
+INSERT INTO `global_datos` (`id`, `concepto_1`, `entero_1`) VALUES ("WEBSAFIPMODO",	"ACCESO AL WEB SERVICE 0-HOMOLOGACION, 1-PRODUCCION", 0)
+
+
+Los archivos de Certificacion, de Clave y de Homologacion tienen que estar en la siguiente rama:
+
+/app/vendors/afip/src/Afip_res
+
+
+/*
+* MODIFICAR LA TABLA FACTURA EL CAMPO numero_documento de INT a VARCHAR
+*/
+
+ALTER TABLE `cordobas_rvsa`.`facturas` CHANGE `numero_documento` `numero_documento` VARCHAR(11) NULL;

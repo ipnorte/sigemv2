@@ -1,0 +1,1 @@
+<?php echo $this->requestAction("/config/bancos/combo/$model/".($disable ? '1/' : '0/').($empty ? '1/' : '0/')."$tipo/$label")?>

@@ -1,0 +1,30 @@
+CREATE TABLE `proveedor_ctactes` (
+  `item` int(11) DEFAULT '0',
+  `proveedor_id` int(11) DEFAULT '0',
+  `fecha` date DEFAULT NULL,
+  `concepto` varchar(50) DEFAULT NULL,
+  `debe` decimal(12,2) DEFAULT '0.00',
+  `haber` decimal(12,2) DEFAULT '0.00',
+  `saldo` decimal(12,2) DEFAULT '0.00',
+  `id` int(11) DEFAULT '0',
+  `tipo` varchar(5) DEFAULT NULL,
+  `anular` tinyint(1) DEFAULT '0',
+  `comentario` varchar(100) DEFAULT NULL,
+  `pagos` decimal(12,2) DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `cliente_ctactes` (
+  `item` int(11) DEFAULT '0',
+  `cliente_id` int(11) DEFAULT '0',
+  `fecha` date DEFAULT NULL,
+  `concepto` varchar(50) DEFAULT NULL,
+  `debe` decimal(12,2) DEFAULT '0.00',
+  `haber` decimal(12,2) DEFAULT '0.00',
+  `saldo` decimal(12,2) DEFAULT '0.00',
+  `id` int(11) DEFAULT '0',
+  `tipo` varchar(5) DEFAULT NULL,
+  `anular` tinyint(1) DEFAULT '0',
+  `comentario` varchar(100) DEFAULT NULL,
+  `pagos` decimal(12,2) DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

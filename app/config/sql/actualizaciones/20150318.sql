@@ -1,0 +1,1 @@
+ALTER TABLE `sigem_db`.`co_asiento_renglones` ADD COLUMN `importe` DECIMAL(15,2) DEFAULT 0.00 NULL AFTER `haber`; 

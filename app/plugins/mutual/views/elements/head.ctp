@@ -1,0 +1,1 @@
+<?php echo $this->renderElement('head',array('title' => 'LIQUIDACION DE DEUDA','plugin' => 'config'))?>

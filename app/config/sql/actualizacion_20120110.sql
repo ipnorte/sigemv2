@@ -1,0 +1,1 @@
+alter table `sigem_db`.`liquidaciones` add column `asincrono_id` int(11) DEFAULT '0' NULL after `cliente_id`;

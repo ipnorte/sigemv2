@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100% !important;
+          padding: 5px !important;
+        }
+        .content {
+          font-size: 15px !important;
+        }
+    .logo-container {
+      padding: 1px 0 !important;
+    }
+    .logo-img {
+      max-width: 250px !important;
+      display: none !important; 
+    }
+      }
+    </style>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;">
+    <table width="100%" bgcolor="#f4f4f4" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" style="padding: 5px;">
+          <table class="container" width="800" style="background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+        <tr>
+          <td bgcolor="#ffffff" style="padding: 20px; border-bottom: 2px solid #148ece;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" style="vertical-align: middle;">
+                  <img src="{{ params.logo_url }}" alt="Logotipo {{ params.proveedor }}" class="logo-img" style="max-width: 250px; height: auto; display: block;" />
+                </td>
+                <td align="right" style="vertical-align: middle;">
+                  <h2 style="margin: 0; color: #148ece;">Estado de cuenta</h2>
+                  <p style="margin: 0; font-size: 16px; color: #148ece;">Actualización a {{ params.periodo }}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+            <tr>
+              <td class="content" style="padding: 30px; color: #333333;">
+                <p>Estimado/a <strong>{{ params.nombre }}</strong>,</p>
+                <p>Le enviamos su estado de cuenta {{ params.proveedor }} a <strong>{{ params.periodo }}</strong>:</p>
+
+
+
+<p>Detalle de cuotas del período (*):</p>
+<table width="100%" cellpadding="8" cellspacing="0" style="font-size: 13px; border-collapse: collapse; line-height: 1.4; margin-top: 10px;">
+  <thead style="background-color: #f4f6f6;">
+    <tr style="border-bottom: 1px solid #ddd;">
+      <th align="left" style="padding: 6px;">#Crédito</th>
+      <th align="left" style="padding: 6px;">Cuota</th>
+      <th align="right" style="padding: 6px;">Importe</th>
+      <th align="right" style="padding: 6px;">Saldo</th>
+      <th align="left" style="padding: 6px;">Período</th>
+      <th align="left" style="padding: 6px;">Concepto</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ params.cuotas_completas | safe }}
+  </tbody>
+</table>
+
+<!-- Separación visual antes de los totales -->
+<div style="height: 25px;"></div>
+
+<table width="100%" cellpadding="10" cellspacing="0" style="margin-top: 10px;">
+  <tr>
+    <td align="right" style="background-color: #eafaf1; border: 1px solid #27ae60; border-radius: 6px; font-size: 15px; color: #2e7d32;">
+      Total pagado (*): <strong>$ {{ params.total_pagado }}</strong>
+    </td>
+  </tr>
+  <tr><td style="height: 8px;"></td></tr>
+  <tr>
+    <td align="right" style="background-color: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; font-size: 15px; color: #c0392b;">
+      Total adeudado vencido (*): <strong>$ {{ params.total_vencido }}</strong>
+    </td>
+  </tr>
+</table>
+
+<p style="margin-top: 3; font-size: 12px; font-weight: bold;">(*) S.E.U.O. (Salvo Error u Omisi&oacute;n)</p>
+
+<p style="color: #c0392b; font-weight: bold; text-align: center;">{{ params.mensaje_stop}}</p>
+
+                <p>En caso de contar con cuotas vencidas, le solicitamos regularizar su situación realizando una transferencia al alias <strong>{{ params.alias }}</strong> y enviando comprobante vía WhatsApp al 
+<a href="https://wa.me/54{{ params.contacto }}?text={{ params.mensaje_whatsapp }}" 
+   target="_blank" style="text-decoration:underline;color:inherit;font-weight: bold;">
+   {{ params.contacto }}
+</a>
+
+
+
+</p>
+
+                <p style="color: #c0392b;"><strong>De no resolverse la deuda en tiempo y forma, la empresa iniciará acciones legales</strong>, derivando en <strong>EMBARGO de sus haberes</strong> y agravando su deuda debido a intereses punitorios y costes legales.</p>
+
+                <p>Para cualquier duda o para recibir mayor asistencia, no dude en contactarnos vía WhatsApp al 
+<a href="https://wa.me/54{{ params.contacto }}?text={{ params.mensaje_whatsapp }}" 
+   target="_blank" style="text-decoration:underline;color:inherit;font-weight: bold;">
+   {{ params.contacto }}
+</a>
+</p>
+
+                <p>Tu tranquilidad es nuestra prioridad.<br><strong>Equipo {{ params.proveedor }}</strong></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td bgcolor="#ecf0f1" style="padding: 15px; text-align: center; font-size: 12px; color: #7f8c8d;">
+                Este mensaje es automático. Por favor, no responda a este correo.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

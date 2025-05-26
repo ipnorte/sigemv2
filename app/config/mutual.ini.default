@@ -1,0 +1,384 @@
+;#################################################################################################
+;	ARCHIVO DE CONFIGURACION DE LA APLICACION
+;#################################################################################################
+[general]
+;default_layout="aman2"
+default_layout="soluciones"
+;default_layout_login="aman_login"
+default_layout_login="soluciones_login"
+;default_css="aman2"
+;https://www.canva.com/es_mx/aprende/100-combinaciones-colores-como-aplicarlas-disenos/
+default_css="blue2"
+;default_css="soluciones"
+nombre_fantasia="Asociacion Mutual NNN"
+domi_fiscal="GRAL PAZ - CORDOBA CAPITAL"
+;------------------------------------------------
+domi_fiscal_calle="GENERAL PAZ"
+domi_fiscal_numero="94"
+domi_fiscal_localidad="CORDOBA"
+domi_fiscal_provincia="CORDOBA"
+;domi_fiscal_latitud=-31.4141321
+;domi_fiscal_longitud=-64.1884645
+google_api_key=AIzaSyDO42vzZW7i_kDvxsBeC-Q2gf30x7mSRPA
+;------------------------------------------------
+matricula_inaes=618
+cuit_mutual="30677551239"
+telefonos="(0351) 4252500 / 4251300"
+email="info@mutualaman.com"
+email_blank="usuarios@mutualaman.com"
+logo_grande="logo_web.png"
+logo_chico="logo_web_chico.gif"
+logo_pdf="logo_pdf.jpg"
+beneficios_externos_render="datos_beneficios_cordoba"
+modelo_padron_jubilados="PadronJubiladoCba"
+modelo_padron_activos="PadronGobiernoCba"
+mutual_proveedor_id=18
+habilitar_modulo_v1=0
+tipo_orden_dto_credito=EXPTE
+tipo_orden_dto_cmutu=CMUTU
+;revalidar_clave_usuario_email=1
+
+
+;------------------------------------------------------------------
+; CONFIGURACION PHPMailer - Blanqueo de clave de Usuarios
+php_mailer=1
+php_mailer_user=sigem@cordobasoft.com
+php_mailer_pass=8O7QMVK2TL84
+php_mailer_pop3_server=mail.cordobasoft.com
+php_mailer_pop3_port=587
+;------------------------------------------------------------------
+
+;-------------------------------------------------------------------------------
+;Ejecutable de PHP para procesos asincronos
+php_pharser='/usr/bin/php'
+;-------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------
+;cuota_social_permanente
+;
+; 0 =   se liquida mientras tenga deuda de cualquier concepto / proveedor
+;       El comercio tiene que tener marcado que genera cuota social
+; 
+; 1 =   funcionamiento normal mutuales
+;------------------------------------------------------------------
+cuota_social_permanente=0
+
+;------------------------------------------------------------------
+; numerar cuotas permanentes
+; 0 = se muestra como nro de cuota 00/00
+; 1 = se muestra nn/mm
+numera_cuota_permanete=0
+;------------------------------------------------------------------
+
+;--------------------------------------------------------------
+;banco_nacion_debito_periodo
+; en liquidacion de deuda solamente envia el periodo del banco nacion
+;--------------------------------------------------------------
+;banco_nacion_debito_periodo=00011
+;--------------------------------------------------------------
+;en la liquidacion socios genera un registro por separado de los conceptos permanentes
+discrimina_conceptos_permanentes_orden_debito=1
+;--------------------------------------------------------------
+;Cuando arma los registros para el lote, totaliza periodo mas mora (no toma los criterios de division)
+;Si respeta los topes por registro
+enviar_periodo_mas_mora = 1
+;--------------------------------------------------------------
+
+;------------------------------------------------------------------
+discrimina_iva=21
+;cargo_por_socio=25
+;------------------------------------------------------------------
+;*** LIQUIDACION CBU POR STORE PROCEDURE
+sp_liquida_deuda_cbu=0
+
+;------------------------------------------------------------------
+;AUTORIZACION DE DEBITO EN ORDEN DE CONSUMOS
+ocom_imprime_auto_debito_nacion = 1
+ocom_imprime_auto_debito_bcocba = 0
+ocom_imprime_auto_debito_margen = 0
+ocom_imprime_pagare_new_page = 0
+ocom_imprime_pago_directo_rio = 0
+ocom_imprime_mutuo = 1
+ocom_imprime_pago_directo_bco_pcia_bsas = 1
+
+
+;--------------------------------------------------------------------------------
+; MODULO DE AYUDA ECONOMICA (RES 14818/03 - INAES)
+modulo_ayuda_economica=1
+;--------------------------------------------------------------------------------
+
+liquidador_fraccionar_lote=20
+consulta_liquidaciones_totalizada=0
+
+;-------------------------------------------------------------------------------
+; MODULO CONSULTA BCRA
+modulo_bcra=1
+
+;-------------------------------------------------------------------------------
+; MODULO NOSIS VALIDADOR DE IDENTIDAD
+nosis_validar_sms=0
+nosis_validar_cbu=0
+;-------------------------------------------------------------------------------
+;MODULO DE VENTAS CON BOOTSTRAP / JQUERY
+bootstrap_ventas_solicitudes=1
+
+;-------------------------------------------------------------------------------
+;MODULO TARJETA DE DEBITO
+tarjetas_de_debito=1
+
+;-------------------------------------------------------------------------------
+; PROCESAR AUTOMATICAMENTE LAS CANCELACIONES ASOCIADAS A UNA SOLICITUD DE CREDITO
+; CUANDO SE APRUEBA
+recauda_cancelaciones_solicitudes=1
+
+;------------------------------------------------------------------
+;---------------------------------------------------------------------------------
+; AUTORIZACIONES DE DEBITO
+;imprimir -> values: TODAS, UNA
+;---------------------------------------------------------------------------------
+[autorizacion_debito]
+imprimir=TODAS
+00011=OCOMP,EXPTE,SERV
+00020=OCOMP,EXPTE,SERV
+00014=OCOMP,EXPTE,SERV
+
+
+
+;---------------------------------------------------------------------------------
+;seteo de datos generales para intercambio de bancos
+;---------------------------------------------------------------------------------
+[intercambio]
+nro_empresa_banco_cordoba = "8679"
+sucursal_bco_nacion="0085"
+tipo_cuenta_banco_nacion="10"
+cuenta_banco_nacion="0005259445"
+moneda_cuenta_banco_nacion="P"
+credicoop_codigo_registro_envio="51"
+credicoop_empresa_subempresa="10800"
+credicoop_descripcion="C PRESTAMO"
+credicoop_empresa_cuit="30677551239"
+santander_descripcion="CUOTA MUTU"
+santander_long_partida=4
+rapipago_codigo_empresa=333;
+
+;-------------------------------------------------------------------
+; CODIGOS DE DESCUENTO CAJA DE JUBILACIONES DE CORDOBA
+;-------------------------------------------------------------------
+CJP_COD_CONS = 224
+CJP_COD_CSOC = 224
+CJP_SCOD_CONS = 1
+CJP_SCOD_CSOC = 0
+
+
+;------------------------------------------------------
+;-- CONVENIO FRANCES CUENTAS PROPIAS - CREDITAM
+;------------------------------------------------------
+bbva_frances_codigo_empresa=51226
+bbva_frances_sucursal_cuenta_cargo=0111
+bbva_frances_sucursal_cuenta_cargo_dc=68
+bbva_frances_cuenta_cargo=0100095531
+bbva_frances_cuenta_divisa="ARS"
+bbva_frances_codigo_servicio="CUOTA"
+bbva_frances_nombre_ordenante="CREDITAM LIMITADA"
+bbva_frances_tipo_cuenta_cbu=20
+bbva_frances_longitud_clave=7
+bbva_frances_concepto_debito="Cuota credito"
+bbva_frances_file_name_codigo_empresa=1
+;------------------------------------------------------
+;-- CONVENIO FRANCES CAMARA COMPENSADORA - CREDITAM
+;------------------------------------------------------
+bbva_frances_1_codigo_empresa=51285
+bbva_frances_1_sucursal_cuenta_cargo=0111
+bbva_frances_1_sucursal_cuenta_cargo_dc=68
+bbva_frances_1_cuenta_cargo=0100095531
+bbva_frances_1_cuenta_divisa="ARS"
+bbva_frances_1_codigo_servicio="CUOTAS"
+bbva_frances_1_nombre_ordenante="CREDITAM LIMITADA"
+bbva_frances_1_tipo_cuenta_cbu=20
+bbva_frances_1_longitud_clave=7
+bbva_frances_1_concepto_debito="Cuota credito"
+bbva_frances_1_file_name_codigo_empresa=1
+;------------------------------------------------------
+;-- CONVENIO FRANCES CUENTAS PROPIAS - MULTICOBROS
+;------------------------------------------------------
+bbva_frances_2_codigo_empresa=57702
+bbva_frances_2_sucursal_cuenta_cargo=0111
+bbva_frances_2_sucursal_cuenta_cargo_dc=67
+bbva_frances_2_cuenta_cargo=0100115493
+bbva_frances_2_cuenta_divisa="ARS"
+bbva_frances_2_codigo_servicio="CUOTA"
+bbva_frances_2_nombre_ordenante="MULTICOBROS      "
+bbva_frances_2_tipo_cuenta_cbu=20
+bbva_frances_2_longitud_clave=22
+bbva_frances_2_concepto_debito="Cuota credito"
+bbva_frances_2_file_name_codigo_empresa=1
+;------------------------------------------------------
+;-- CONVENIO FRANCES CAMARA COMPENSADORA - MULTICOBROS
+;------------------------------------------------------
+bbva_frances_3_codigo_empresa=57701
+bbva_frances_3_sucursal_cuenta_cargo=0111
+bbva_frances_3_sucursal_cuenta_cargo_dc=67
+bbva_frances_3_cuenta_cargo=0100115493
+bbva_frances_3_cuenta_divisa="ARS"
+bbva_frances_3_codigo_servicio="CUOTA 1"
+bbva_frances_3_nombre_ordenante="MULTICOBROS      "
+bbva_frances_3_tipo_cuenta_cbu=20
+bbva_frances_3_longitud_clave=22
+bbva_frances_3_concepto_debito="Cuota credito"
+bbva_frances_3_file_name_codigo_empresa=1
+
+
+;------------------------------------------------------
+;-- CONVENIO FRANCES CUENTAS PROPIAS - GRUPO JUNIOR
+;------------------------------------------------------
+bbva_frances_4_codigo_empresa=76144
+bbva_frances_4_sucursal_cuenta_cargo=0999
+bbva_frances_4_sucursal_cuenta_cargo_dc=43
+bbva_frances_4_cuenta_cargo=0101161527
+bbva_frances_4_cuenta_divisa="ARS"
+bbva_frances_4_codigo_servicio="GRUPO JUNI"
+bbva_frances_4_nombre_ordenante="GRUPO JUNIIOR SA"
+bbva_frances_4_tipo_cuenta_cbu=20
+bbva_frances_4_longitud_clave=11
+bbva_frances_4_concepto_debito="CUOTA"
+bbva_frances_4_file_name_codigo_empresa=1
+
+
+;------------------------------------------------------
+;-- CONVENIO FRANCES CAMARA COMPENSADORA - GRUPO JUNIOR
+;------------------------------------------------------
+bbva_frances_5_codigo_empresa=75732
+bbva_frances_5_sucursal_cuenta_cargo=0999
+bbva_frances_5_sucursal_cuenta_cargo_dc=43
+bbva_frances_5_cuenta_cargo=0101161527
+bbva_frances_5_cuenta_divisa="ARS"
+bbva_frances_5_codigo_servicio="GRUPO JUNI"
+bbva_frances_5_nombre_ordenante="GRUPO JUNIIOR SA"
+bbva_frances_5_tipo_cuenta_cbu=20
+bbva_frances_5_longitud_clave=11
+bbva_frances_5_concepto_debito="CUOTA"
+bbva_frances_5_file_name_codigo_empresa=1
+
+
+;------------------------------------------------------
+;-- CONVENIO FRANCES CUENTAS PROPIAS - FENIX SERVICIOS
+;------------------------------------------------------
+bbva_frances_6_codigo_empresa=76143
+bbva_frances_6_sucursal_cuenta_cargo=0999
+bbva_frances_6_sucursal_cuenta_cargo_dc=43
+bbva_frances_6_cuenta_cargo=0101161749
+bbva_frances_6_cuenta_divisa="ARS"
+bbva_frances_6_codigo_servicio="BBVACERRAD"
+bbva_frances_6_nombre_ordenante="FENIX SERVICIOS SA"
+bbva_frances_6_tipo_cuenta_cbu=20
+bbva_frances_6_longitud_clave=22
+bbva_frances_6_concepto_debito="CUOTA"
+bbva_frances_6_file_name_codigo_empresa=1
+
+
+;------------------------------------------------------
+;-- CONVENIO FRANCES CAMARA - FENIX SERVICIOS
+;------------------------------------------------------
+bbva_frances_7_codigo_empresa=75731
+bbva_frances_7_sucursal_cuenta_cargo=0999
+bbva_frances_7_sucursal_cuenta_cargo_dc=43
+bbva_frances_7_cuenta_cargo=0101161749
+bbva_frances_7_cuenta_divisa="ARS"
+bbva_frances_7_codigo_servicio="FENIX SERV"
+bbva_frances_7_nombre_ordenante="FENIX SERVICIOS SA"
+bbva_frances_7_tipo_cuenta_cbu=20
+bbva_frances_7_longitud_clave=11
+bbva_frances_7_concepto_debito="CUOTA"
+bbva_frances_7_file_name_codigo_empresa=1
+
+
+
+;----------------------------------------------
+;CONVENIO BARRIDO SANTANDER
+santander_1_descripcion="CRED LTDA"
+santander_1_long_partida=5
+
+santander_2_descripcion="CUOTA"
+santander_2_long_partida=4
+
+
+;----------------------------------------------
+
+meridian_cuit_empresa=30711612854
+meridian_prestacion="COBROCUOTA"
+meridian_file_name="ammaarcof.txt"
+medidian_razon_social="ARCOFISA SA"
+
+
+;-----------------------------------------------------------------
+;-- BANCO COMAFI ----
+; comafi_empresa_cuit=30677551239
+; comafi_empresa_codigo=14269
+; comafi_empresa_prestacion="CUOTACONSU"
+; comafi_empresa_nombre="ASOC.MUTUAL ARG.NUEVA"
+; comafi_empresa_ctabco=1140009786
+
+;-----------------------------------------------------------------
+;-- BANCO COMAFI ----
+comafi_empresa_cuit=30715254758
+comafi_empresa_codigo=15482
+comafi_empresa_prestacion="CUOTA"
+comafi_empresa_nombre="RYV SA"
+comafi_empresa_ctabco=1140013024
+;-----------------------------------------------------------------
+
+;-----------------------------------------------------------------
+
+;-----------------------------------------------------------------
+; -- CUENCA --
+cuenca_identificador_presentacion='MERIDACUOT'
+;-----------------------------------------------------------------
+
+;-----------------------------------------------------------------
+; -- ISSAR BANCO NACION --
+;-----------------------------------------------------------------
+sucursal_bco_nacion_1="0048"
+tipo_cuenta_banco_nacion_1="10"
+cuenta_banco_nacion_1="0110051369"
+moneda_cuenta_banco_nacion_1="P"
+
+;-----------------------------------------------------------------
+; -- BANCO MACRO --
+;-----------------------------------------------------------------
+macro_nro_convenio="85090"
+;-----------------------------------------------------------------
+; -- BANCO MACRO *** BARRIDO **** --
+;-----------------------------------------------------------------
+macro_b_nro_convenio="85089"
+
+;-----------------------------------------------------------------
+;-- CRONOCRED ----
+;-----------------------------------------------------------------
+cronocred_sucursal_bco_nacion="0085"
+cronocred_tipo_cuenta_banco_nacion="10"
+cronocred_cuenta_banco_nacion="0005531874"
+cronocred_moneda_cuenta_banco_nacion="P"
+
+;-----------------------------------------------------------------
+;-- COINAG ----
+;-----------------------------------------------------------------
+coinag_empresa_cuit=30711612854
+coinag_empresa_cprestamo=1940
+coinag_empresa_entidad=4386
+
+
+;-----------------------------------------------------------------
+;-- COINAG ----
+;-----------------------------------------------------------------
+roela_empresa_cuit=30711612854
+roela_empresa_idempresa=1234567890
+roela_empresa_cprestamo='MUTUAL 22 SEPT'
+
+
+;-----------------------------------------------------------------
+; BANCO ITAU
+itau_cuit_empresa="01234567890"
+itau_convenio="000001"
+itau_id_filler=" "
+;-----------------------------------------------------------------

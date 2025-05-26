@@ -1,0 +1,2 @@
+<span style="font-size: 100%;font-weight: normal;float: left;"><?php echo $util->hoy(true,true)?></span>
+<div style="float: right;padding-bottom:3px;"><?php echo $this->renderElement('/maquetado/datos_user')?></div>

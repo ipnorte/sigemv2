@@ -1,0 +1,193 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	color: #003366;
+	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
+	font-size:90%;
+	margin: 0;
+}
+
+a {
+	background-color: inherit;
+	color: #003d4c;
+	text-decoration:none;	
+	font-weight: bold;
+}
+a:hover {
+	background-color: inherit;
+	color: #003d4c;
+	text-decoration: underline;
+}
+a img {
+	border:none;
+	margin:2px;
+}
+h1, h2, h3, h4 {
+	background-color: inherit;
+	font-weight: normal;
+}
+
+h1 {
+	color: #003d4c;
+	font-size: 100%;
+	margin: 0;
+}
+h2 {
+	color: #e32;
+	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-size: 16px;
+	font-weight:bold;
+	margin-bottom: 3px;
+	padding-top: 2px;
+}
+h3 {
+	color: #993;
+	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-size: 13px;
+	padding-top: 2px;
+	margin-bottom: 3px;
+}
+h4 {
+	color: #993;
+	font-weight: normal;
+	padding-top: 2px;
+}
+ul, li {
+	margin: 0 12px;
+}
+
+hr {
+	background-color: #FFFFFF;
+	color: #D8DBD4;;
+	/*margin: 3px 3px 5px 3px;*/
+	border-collapse:collapse;
+	border-bottom:1px solid #D8DBD4;
+}
+
+#login{
+	clear: both;
+	width:408px;
+	margin: 5px auto;
+	/*border:1px solid #F5f7f7;*/
+	padding:2px;
+}
+
+#login .logo{
+	width:100%;
+	text-align:center;
+}
+
+#login .logo img{
+	width:406px;
+	border:1px;
+	padding:1px;
+}
+
+#login .form_login{
+	clear:both;
+}
+
+#login form{margin: 0 auto; font-weight:bold;color: #003366;}
+
+#login fieldset{
+	border: 1px solid #D8DBD4;
+	margin-top: 5px;
+	padding: 10px;
+}
+
+#login form div.submit {
+	border: 0;
+	clear: both;
+	margin: 0 auto;
+	width: auto;
+	text-align:center;
+	float:right;
+	height:30px;
+}
+
+#login form .btn_submit {
+	height:30px;
+	display: inline;
+	padding: 2px;
+	width: auto;
+	vertical-align: middle;
+	background-color: #003366;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	color: #FFFFFF;
+	cursor: pointer;
+	border: 1px solid #003366;
+
+	/*
+	border: none;
+	background: url("../img/menu/key_cambio_clave.gif") no-repeat top left;
+	vertical-align: baseline;
+	height: 20px;
+	text-indent: 10px;
+	border: 1px solid #003366;
+	cursor: pointer;
+	padding: 5px;	*/
+	
+}
+
+
+#login .mensaje_pie{
+	clear:both;
+	margin-top:10px;
+	padding:5px;
+	font-size:12px;
+	text-align:center;
+	/*background-color: #F5f7f7;*/
+	color:#666666;
+}
+
+#login .banners_pie{
+	clear:both;
+	margin-top:10px;
+	padding:5px;
+	font-size:10px;
+	vertical-align:baseline;
+	text-align:center;
+}
+
+#login .clear{
+	clear:both;
+}
+
+.notices_error{
+	background-color: #FFBBBB;
+	background-image: url("../img/controles/error.png");
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	text-indent: 20px;	
+  	color: #B30000;
+  	border: 1px solid #B30000;
+	padding:5px;
+	margin:2px;
+	font-size: x-small;
+
+}
+
+.submit_secure{
+	background-image: url("../img/controles/16-security-key.png");
+	background-position: 2px 5px;
+	background-repeat: no-repeat;
+	text-indent: 15px;
+	height: 30px;
+	background-color: #D8DBD4;
+}
+
+
+/*ERROR LOGIN*/
+#authMessage.message{
+	background-color: #FFBBBB;
+	background-image: url("../img/controles/error.png");
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	text-indent: 20px;	
+  	color: #B30000;
+  	border: 1px solid #B30000;
+	padding:5px;
+	margin:2px;		
+}

@@ -1,0 +1,1 @@
+<?php echo $proveedor['Proveedor']['razon_social_resumida']?>

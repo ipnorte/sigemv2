@@ -1,0 +1,2 @@
+<?php //   debug("/admin/global_datos/combo/".($label!='' ? $label .'/' : '')."$model/$prefijo/".($disable ? 1 : 0)."/".($empty ? 1 : 0)."/$selected/".($logico ? 1 : 0));?>
+<?php echo $this->requestAction("/config/global_datos/combo/".($label!='' ? $label .'/' : '')."$model/$prefijo/".($disable ? 1 : 0)."/".($empty ? 1 : 0)."/$selected/".($logico ? 1 : 0));?>

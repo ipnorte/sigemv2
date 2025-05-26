@@ -1,0 +1,1 @@
+alter table items ADD COLUMN tipo_item varchar(3) DEFAULT 'GEN' AFTER agrupa_en;

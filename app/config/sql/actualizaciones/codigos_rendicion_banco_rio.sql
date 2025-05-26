@@ -1,0 +1,24 @@
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'ERR', 'ERROR EN CODIGO DE RENDICION', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', '000', 'COBRADO', '1', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'PEN', 'PENDIENTE', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R02', 'CUENTA CERRADA O SUSPENDIDA', '0', 'MUTUCALIMORO');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R03', 'CUENTA INEXISTENTE', '0', 'MUTUCALIMORO');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R04', 'NRO DE CUENTA INVALIDO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R08', 'ORDEN DE NO PAGAR', '0', 'MUTUCALISDEB');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R10', 'FALTA DE FONDOS', '0', 'MUTUCALIMORO');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R13', 'SUCURSAL / ENTIDAD / DESTINO INEXISTENTE', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R14', 'IDENTIFICADOR DEL CLIENTE EN LA EMPRESA ERRONEO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R15', 'BAJA DEL SERVICIO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R17', 'ERROR DE FORMATO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R18', 'FECHA DE COMPENSACION ERRONEO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R19', 'IMPORTE ERRONEO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R20', 'MONEDA DISTINTA A LA CUENTA DE DEBITO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R23', 'SUCURSAL NO HABILITADA', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R24', 'TRANSACCION DUPLICADA', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R28', 'RECHAZO PRIMER VENCIMIENTO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R29', 'REVISION YA EFECTUADA', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R34', 'CLIENTE NO ADHERIDO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R75', 'FECHA INVALIDA', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R86', 'IDENTIFICADOR DE EMPRESA ERRONEO', '0', 'MUTUCALINORM');
+INSERT INTO `banco_rendicion_codigos` (`banco_id`, `codigo`, `descripcion`, `indica_pago`, `calificacion_socio`) VALUES ('00072', 'R94', 'DIA NO LABORABLE', '0', 'MUTUCALINORM');
+

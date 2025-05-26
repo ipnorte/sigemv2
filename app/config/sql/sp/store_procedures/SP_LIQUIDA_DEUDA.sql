@@ -1,0 +1,49 @@
+CREATE DEFINER=`sigem_sa`@`%` PROCEDURE `SP_LIQUIDA_DEUDA`(
+vPID INT(11),
+vPERIODO VARCHAR(6),
+vCODIGO_ORGANISMO VARCHAR(12)
+)
+BEGIN
+DECLARE l_last_row INT DEFAULT 0;
+DECLARE vSOCIO_ID INT(11);
+
+DECLARE CURSOR_SOCIOS CURSOR FOR 
+SELECT Socio.id FROM socios AS Socio
+INNER JOIN orden_descuentos AS OrdenDescuento ON (OrdenDescuento.socio_id = Socio.id)
+INNER JOIN persona_beneficios AS PersonaBeneficio ON (PersonaBeneficio.id = OrdenDescuento.persona_beneficio_id)
+WHERE PersonaBeneficio.codigo_beneficio = vCODIGO_ORGANISMO
+GROUP BY Socio.id LIMIT 10;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_last_row=1;
+
+
+SELECT p1,p2,p3 into @PERIODO,@ORGANISMO,@PRE_IMPUTA FROM asincronos where id = vPID;
+
+
+IF IFNULL(@PERIODO,'') = vPERIODO AND IFNULL(@ORGANISMO,'') = vCODIGO_ORGANISMO THEN
+
+	SET @REGISTRO = 1;
+
+	OPEN CURSOR_SOCIOS;
+	c1_loop: LOOP
+		FETCH CURSOR_SOCIOS INTO vSOCIO_ID;
+		IF (l_last_row = 1) THEN
+			LEAVE c1_loop; 
+		END IF;	      
+
+		
+		IF SUBSTRING(@ORGANISMO,9,2) = 22 THEN
+			CALL SP_CONTROL_ASINCRONO(vPID,'P',10,@REGISTRO,concat('LIQUIDANDO SOCIO #',vSOCIO_ID));	
+			CALL SP_LIQUIDA_DEUDA_CBU(vSOCIO_ID,vPERIODO,vCODIGO_ORGANISMO,@PRE_IMPUTA);
+            SET @REGISTRO = @REGISTRO + 1;
+		END IF;
+		
+		
+		
+	END LOOP c1_loop;    
+    
+END IF;
+
+
+-- DROP VIEW IF EXISTS view_socios;
+END

@@ -1,0 +1,174 @@
+
+/*
+ * CSS for css menu helper.
+ * Author: John Reeves
+ * Credit given to Jake Gordon, author of Nice Menus module
+ * for Drupal, for much of the idea.
+ */
+ul.css_menu,
+ul.css_menu ul{
+	list-style: none;
+	margin: 0;
+	padding: 3px;
+}
+
+ul.css_menu ul{
+	display: none;
+	position: absolute;
+	margin-right: 0;
+	z-index: 5;
+}
+
+ul.css_menu li{
+	margin: 0;
+	padding: 5px;
+}
+
+ul.css_menu li{
+	cursor: pointer;
+	float: left;
+	border-right: 1px solid #e2e6ea;
+	background-color: #C3D9FF;
+	font-size: 12px;
+	width: 150px;
+	position: relative;
+	left: 2px;
+	top: 0;
+	font-weight: bold;
+	color:#000000;
+}
+
+ul.css_menu ul li{
+	display: block;
+}
+
+ul.css_menu:after{
+	clear: both;
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+ul.css_menu li:hover{
+	background-color: #C3D9FF;
+}
+
+/*
+ * Hide sub menus that are not hovered over.
+ * It only works for 5 levels deep.  If for some reason you need
+ * more, it should be easy to see how to copy the last selector and
+ * add one more li:hover.  Same goes for the display: block; part below.
+ */
+ul.css_menu ul,
+ul.css_menu li:hover ul ul,
+ul.css_menu li:hover li:hover ul ul,
+ul.css_menu li:hover li:hover li:hover ul ul{
+  display: none; 
+} 
+
+/* show hovered submenus */
+ul.css_menu li:hover ul,
+ul.css_menu li:hover li:hover ul,
+ul.css_menu li:hover li:hover li:hover ul,
+ul.css_menu li:hover li:hover li:hover li:hover ul{
+	display: block;
+}
+
+/* RIGHT type menus */
+
+ul.cm_right li{
+	float: none;
+}
+
+ul.cm_right li.parent:hover,
+ul.cm_right li li.parent:hover{ 
+	background: #F5f7f7 url(arrow-right.gif) right center no-repeat;
+}
+
+ul.cm_right li.parent,
+ul.cm_right li li.parent{ 
+	background-image: url(arrow-right.gif);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+ul.cm_right li ul,
+ul.cm_right li ul li.parent ul{
+	left: 5.9em;
+	top: -2px;
+}
+
+
+/* LEFT type menus */
+
+ul.cm_left li{
+	float: none;
+	padding-left: 15px;
+}
+
+ul.cm_left li.parent:hover,
+ul.cm_left li li.parent:hover{ 
+	background: #F5f7f7 url(arrow-left.gif) left center no-repeat;
+}
+
+ul.cm_left li.parent,
+ul.cm_left li li.parent{ 
+	background-image: url(arrow-left.gif);
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+ul.cm_left li ul,
+ul.cm_left li ul li.parent ul{
+	left: -7.8em;
+	top: -2px;
+}
+
+
+
+/* DOWN type menus */
+ul.cm_down li ul{
+	top: 1.5em;
+	left: -4px;
+}
+
+ul.cm_down li ul li.parent ul{
+	left: 5.9em;
+	top: -0.1em;
+}
+
+
+ul.cm_down li.parent:hover{
+	background: url(arrow-down.gif) right center no-repeat;
+}
+
+
+ul.cm_down li.parent {
+  /* Add class 'hover' when hovered */
+  stupid-ie-be-more-funny: expression(this.onmouseover =  new Function("this.className += ' hover';"));
+}
+ul.cm_down li.parent.hover {
+  /* Duplicate bit from the :hover rule */
+  background: #66cbca url(arrow-right.png) right center no-repeat; 
+  /* Delete 'hover' class when unhovered */
+  stupid-ie-be-more-funny: expression(this.onmouseout = new Function("this.className=(' '+this.className+' ').replace(' hover ','');"));
+} 
+
+
+ul.cm_down li.parent{
+	background-image: url(arrow-down.gif);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+ul.cm_down li li.parent:hover{ 
+	background: #fffffff url(arrow-right.gif) right center no-repeat;
+}
+
+ul.cm_down li li.parent{ 
+	background-image: url(arrow-right.gif);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+

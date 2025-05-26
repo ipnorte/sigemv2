@@ -1,0 +1,1 @@
+<?php echo $controles->openWindow($texto,'/mutual/liquidaciones/by_socio/'.$socio_id.'/1')?>

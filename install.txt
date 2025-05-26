@@ -1,0 +1,2 @@
+chmod -R 777 /home/adrian/Trabajo/www/sigemv2/app/tmp
+chmod -R 777 /home/adrian/Trabajo/www/sigemv2/app/webroot/files

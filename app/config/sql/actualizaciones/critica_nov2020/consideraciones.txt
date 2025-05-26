@@ -1,0 +1,23 @@
+###############################################################################################
+# CONSIDERACIONES PARA LA INSTALACION DE LAS NUEVAS FUNCIONALIDADES
+###############################################################################################
+
+1) COMPILAR LOS PROCEDIMIENTOS Y FUNCIONES EN LA BASE DE DATOS
+2) CORRER SCRIPT DE MODIFICACIONES DE ESTRUCTURA
+
+
+2) Para habilitar el modulo de liquidacion por procedimientos, agregar al mutual.ini
+;*** LIQUIDACION CBU POR STORE PROCEDURE
+sp_liquida_deuda_cbu=1
+
+3) Para habilitar el modulo de emision de diskette:
+
+3.1 Setear para cada banco el procedimientos
+
+3.2 Colocar en parametros los datos existentes en el mutual.ini para cada banco
+
+3.3 Agregar una variable mas en parametros (al ultimo) para indicar el tope por registro
+de cada banco. Si se pone en cero, toma el valor decimal_2 de la global para el organismo
+
+3.4 Agregar en el mutual.ini dentro de la seccion [intercambio]:
+genera_diskete_sp=1

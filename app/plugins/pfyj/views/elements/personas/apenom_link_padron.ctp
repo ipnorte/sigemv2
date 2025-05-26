@@ -1,0 +1,1 @@
+<?php echo $controles->openWindow($persona['Persona']['apellido'] .', '. $persona['Persona']['nombre'],'/pfyj/personas/view/'.$persona['Persona']['id'])?>

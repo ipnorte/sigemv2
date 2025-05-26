@@ -1,0 +1,675 @@
+@CHARSET "ISO-8859-1";
+
+/****  ESTILO GENERAL DE LA APLICACION ****/ /*
+
+Berry Sweet
+
+#232533 = VIOLETA OSCURO
+#966D6C = MALVA
+#FFE6B0 = PASTEL
+#FABD84 = PASTEL OSCURO
+#FF8D54 = NARANJA
+#F0F4DD = VERDE AGUA
+
+#FFDA89 = NARANJA CLARO
+#F24F00 = NARANJA ROJIZO
+
+#FF3300 = ROJO NARANJA H2
+#990000 = MARRON H3
+
+*********************************************/
+
+* {
+	margin:0;
+	padding:0;
+}
+/*********************************************************************/
+/* General Style Info */
+/*********************************************************************/
+
+body {
+	/*background: #F5f7f7;*/
+	background-image: url("../img/maquetado/fondo.png");
+	color: #232533;
+	font-family:sans-serif;
+	font-size:90%;
+	margin: 0;
+}
+
+a {
+	background-color: inherit;
+	color: #232533;
+	text-decoration: none;	
+
+}
+a:hover {
+	background-color: inherit;
+	color: #F24F00;
+	text-decoration: underline;
+}
+a img {
+	border:none;
+	margin:2px;
+}
+h1, h2, h3, h4 {
+	background-color: inherit;
+	font-weight: normal;
+}
+
+h1 {
+	color: #232533;
+	font-size: 18px;
+	margin-bottom: 3px;
+	font-weight:bold;
+}
+h2 {
+	color: #FF3300;
+	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-size: 16px;
+	font-weight:bold;
+	margin: 5px 0px 5px 0px;
+	text-decoration: underline;
+}
+h3 {
+	color: #990000;
+	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	margin: 5px 0px 5px 0px;
+
+}
+h4 {
+	color: #993;
+	font-weight: normal;
+	padding-top: 2px;
+}
+ul, li {
+	margin: 0 12px;
+}
+
+hr {
+	background-color: #FFFFFF;
+	color: #D8DBD4;;
+	/*margin: 3px 3px 5px 3px;*/
+	border-collapse:collapse;
+	border-bottom:1px solid #D8DBD4;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
+/*************************************************************************/
+/**** MAQUETADO GENERAL ****/
+/*************************************************************************/
+
+
+#container{
+	height:auto;
+	background-color:#FFFFCC;
+	background-image: url("../img/maquetado/fondo.png");
+	width: 1010px;
+	font-size: 12px;
+}
+
+/* encabezado */
+
+#head{
+	height:65px;
+	padding:2px;
+	background-image: url("../img/maquetado/FondoHeader.png")
+}
+#head .app_name{
+	font-family:Arial;
+	font-size:150%;
+	color:#FFFFFF;
+	float:left;
+	background-image: url("../img/maquetado/money.png");
+	background-repeat: no-repeat;
+	background-position:0px 10px;
+	text-indent: 20px;
+}  
+
+
+/* menu */
+#main_menu{
+	display: block;
+	background-image: url("../img/maquetado/fondo.png");
+	color:#003366;
+	font-size:12px;
+	width:127px;
+	padding-left:5px;
+	float:left;
+	clear:both;
+	overflow: hidden;
+	
+}
+
+#main_menu a{
+	margin-bottom:5px;
+	color:#003366;
+	font-weight: normal;
+	text-decoration: none;
+}
+#main_menu a:hover{
+	margin-bottom:5px;
+	text-decoration:underline;
+	color:#003366;
+	font-weight: normal;
+}
+
+.MenuTitle{
+	width:110px;
+	cursor: pointer;
+	margin-bottom:3px;
+	margin-top:3px;
+	/*border-top: 1px solid #F5f7f7;*/
+	border-bottom: 1px solid #F5f7f7;
+	padding-top: 2px;
+	padding-bottom:3px;
+	float: left;
+}
+
+.MenuSubTitleContainer{
+	cursor: pointer;
+	margin-bottom:3px;
+	margin-top:3px;
+	/*border-top: 1px solid red;*/
+}
+.MenuSubTitle{
+	margin-bottom:3px;
+	text-indent: 10px;
+}
+
+#diseno_menu{
+	border: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	background: #B7CEE2;
+	float: left;
+}
+#diseno_menu td{
+	padding: 0px;
+	color: #003366;
+	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
+	font-size:10px;
+}
+
+#diseno_menu .data{
+	/*min-width:350px;*/
+	padding: 0px;
+	background-image: url('../img/maquetado/MenuNav_r2_c1.gif');
+	background-repeat: repeat-y;
+	text-align: left;
+	padding-bottom: 5px;
+	text-indent:3px;
+}
+
+/* contenedor de la aplicacion */
+#app_container{
+	display: block;
+	margin:0;
+	min-height:450px;
+	width:870px;
+	float:left;
+	overflow: hidden;
+	background-image: url("../img/maquetado/fondo.png");
+	
+}
+
+#diseno_container{
+	border: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	background: #FFFFFF;
+	float: left;
+}
+
+/*#diseno_container td{padding: 0px;}*/
+
+#diseno_container .r1c1{
+	width:17px;
+	height:30px;
+	background-image: url('../img/maquetado/AppContainer_r1_c1.gif');
+	padding: 0px;
+}
+#diseno_container .r1c2{
+	width:100%;
+	height:30px;
+	background-image: url('../img/maquetado/AppContainer_r1_c2.gif');
+	background-repeat:repeat-x;
+	text-align: right;
+	color: #FFFFFF;
+	font-size:85%;
+	vertical-align: top;
+	padding: 0px;
+	
+}
+
+#diseno_container .r1c2 a{color:#FFFFFF;font-size: 10px;}
+
+
+#diseno_container .r1c3{
+	width:34px;
+	height:30px;
+	background-image: url('../img/maquetado/AppContainer_r1_c3.gif');
+	padding: 0px;
+}
+
+#diseno_container .r2c1{
+	width:11px;
+	background-image: url('../img/maquetado/AppContainer_r2_c1.gif');
+	background-repeat:repeat-y;
+	padding: 0px;
+}
+
+#diseno_container .r2c2{
+	width:100%;
+	vertical-align: top;
+	padding: 0px;
+}
+
+#diseno_container .r2c3{
+	width:11px;
+	background-image: url('../img/maquetado/AppContainer_r2_c3.gif');
+	background-repeat:repeat-y;
+	padding: 0px;
+}
+
+
+
+#diseno_container .r3c1{
+	width:17px;
+	height:25px;
+	background-image: url('../img/maquetado/AppContainer_r3_c1.gif');
+	padding: 0px;
+}
+
+#diseno_container .r3c2{
+	width:100%;
+	height:30px;
+	background-image: url('../img/maquetado/AppContainer_r3_c2.gif');
+	background-repeat:repeat-x;
+	padding: 0px;
+}
+#diseno_container .r3c3{
+	width:34px;
+	height:30px;
+	background-image: url('../img/maquetado/AppContainer_r3_c3.gif');
+	padding: 0px;
+}
+
+#mensaje_container{
+	width:87%;
+	float:right;
+	display: block;
+	background-color: #FFFFFF;
+	border-left:1px solid #D8DBD4;
+	border-bottom:1px solid #D8DBD4;
+	padding:5px;
+}
+
+#foot{
+	height:25px;
+
+}
+
+.actions{
+	width:auto;
+	padding: 3px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	/*font-style: italic;*/
+}	
+
+
+#user_options{
+	border: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	background-image: url("../img/maquetado/fondo.png");
+	float: right;
+}
+
+#user_options td{padding: 0px;}
+
+#user_options .data{
+	/*min-width:350px;*/
+	padding: 0px;
+	background-image: url('../img/maquetado/DatosUser_r1_c2.gif');
+	background-repeat: repeat-x;
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+#user_options a{background: transparent;}
+
+
+/*********************************************************************/
+/* TABLAS */
+/*********************************************************************/
+
+table {
+	width:auto;
+	empty-cells: show;
+	border: 1px solid #FFE6B0;
+	margin-bottom: 5px;
+}
+
+th {
+	font-size: 10px;
+	background-color: #FFE6B0;
+	padding: 5px;
+	/*color:#FFFFFF;*/
+}
+
+td {
+	font-size: 10px;
+	background-color: #FFFFFF;;
+	padding: 3px 3px 3px 3px;
+	empty-cells: show;
+	vertical-align: top;
+	
+}
+table tr.altrow td {
+	background: #F0F4DD;
+}
+
+table tr.italic td {
+	font-style: italic;
+}
+
+table tr.strong td {
+	font-weight: bold;
+}
+
+
+
+/*********************************************************************/
+/* PAGINADO */
+/*********************************************************************/
+
+div.paging {
+	background:#fff;
+	color: #ccc;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	font-size: 10px;
+}
+div.paging div.disabled {
+	color: #ddd;
+	display: inline;
+}
+div.paging span {
+}
+div.paging span.current {
+	color: #000;
+}
+div.paging span a {
+}
+
+/*********************************************************************/
+/* DEBUG*/
+/*********************************************************************/
+.cake-sql-log{
+	margin:25px 0px 25px 0px;
+	color:green;
+	font-size: 11px;
+	clear: both;	
+}	
+
+.cake-sql-log table {
+	margin-top:10px;
+	background: #FFFFFF;
+
+}
+
+.cake-sql-log th{
+	border: 1px solid #D8DBD4;
+	font-size: 11px;
+	background-color:aqua;
+	color: black;
+	font-weight: normal;	
+}	
+
+.cake-sql-log td {
+	padding: 4px 8px;
+	text-align: left;
+	color:maroon;
+	font-size: 11px;
+}
+
+
+/*********************************************************************/
+/* MENSAJES DE ERROR Y NOTICES */
+/*********************************************************************/
+
+.notices{
+	background-color: #F4EED7;
+  	color: #746C0A;
+  	border: 1px solid #C8C382;
+	padding:5px;
+	margin:2px;		
+}
+
+.notices_error{
+	background-color: #FFBBBB;
+	background-image: url("../img/controles/error.png");
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	text-indent: 20px;	
+  	color: #B30000;
+  	border: 1px solid #B30000;
+	padding:5px;
+	margin:2px;	
+
+}
+
+.notices_ok{
+	background-color: #DDEFD0;
+	background-image: url("../img/controles/check.png");
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	text-indent: 20px;	
+	color: #008000;
+  	border: 1px solid #008000;
+	padding:5px;
+	margin:2px;	
+
+}
+
+.message{float:left;}
+
+.error-message{
+	color:red;
+	font-size: 12px;
+	font-style:italic;
+}
+
+.error{
+	color:red;
+/*	font-size: 14px;
+	font-style:italic;
+	border: 1px solid red;
+	padding: 10px;
+	margin: 5px 0px 5px 0px;*/
+}
+
+
+.form-error{
+	border: 1px solid red;
+}	
+
+#NoAutorizado{
+	background-color: #FFBBBB;
+  	color: #B30000;
+  	border: 1px solid #B30000;
+	padding:5px;
+	margin:2px;		
+}
+
+#NoAutorizado h1{
+	font-family: "Arial Black";
+	font-size: 150%;
+	color: red;
+	margin: 2px;
+}	
+
+
+/*********************************************************************/
+/* AREAS DE INFORMES */
+/*********************************************************************/
+.info{
+	width:100%;
+/*	background-image: url("../img/controles/page_copy.png");
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	padding: 10px 5px 5px 5px;
+	text-indent: 20px;
+*/
+	padding: 5px;	
+	border:1px solid #FABD84;
+	background-color: #FFF2D9;
+	
+}
+
+
+/*********************************************************************/
+/* FORMULARIOS */
+/*********************************************************************/
+
+form {
+	clear: both;
+	margin-right: 5px;
+	padding:5px;
+	width: 90%;
+}
+fieldset {
+	width: 100%;
+	border: 1px solid #FFE6B0;
+	margin-top: 5px;
+	padding: 10px;
+}
+fieldset legend {
+	background-image: url("../img/maquetado/application_form.png");
+	background-repeat: no-repeat;
+	background-position: 0 5px;
+	text-indent: 15px;
+	/*background: #FFE6B0;*/
+	color: #966D6C;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+fieldset fieldset {
+	margin-top: 0px;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+fieldset fieldset legend {
+	font-size: 120%;
+	font-weight: normal;
+}
+fieldset fieldset div {
+	clear: left;
+	margin: 0 20px;
+}
+form div {
+	/*clear: both;*/
+	margin-bottom: 2px;
+	padding: .2em;
+	vertical-align: text-top;
+}
+form div.input {
+	color: #444;
+	width:auto;
+	float:left;
+}
+
+form div.row {
+	width:100%;
+	float:left;
+	padding: 0;
+	margin: 0;
+}
+
+form div.required {
+	color: #333;
+	font-weight: bold;
+}
+form div.submit {
+	border: 0;
+	clear: both;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+label {
+	display: block;
+	font-size: 100%;
+	padding-right: 20px;
+	width: auto;
+}
+input, textarea {
+	clear: both;
+	font-size: 100%;
+	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
+	padding: 2px;
+	width: auto;
+}
+select {
+	clear: both;
+	font-size: 100%;
+	vertical-align: text-bottom;
+	color:#000000;
+}
+select[multiple=multiple] {
+	font-size: 100%;
+	width: 100%;
+}
+option {
+	font-size: 120%;
+	padding: 0 3px;
+}
+input[type=checkbox] {
+	clear: left;
+	float: left;
+	margin: 0px 3px 0px 2px;
+	width: auto;
+}
+input[type=radio] {
+	float:left;
+	width:auto;
+	margin: 0 3px 7px 0;
+}
+div.radio label {
+	margin: 0 0 6px 20px;
+}
+input[type=submit] {
+	display: inline;
+	font-size: 100%;
+	padding: 2px 5px;
+	width: auto;
+	vertical-align: bottom;
+}
+input[type=button] {
+	display: inline;
+	font-size: 100%;
+	padding: 2px 5px;
+	width: auto;
+	vertical-align: bottom;
+}
+
+.btn_ajax{
+	border: none;
+	background: url("../img/controles/add.png") no-repeat top left;
+	vertical-align: baseline;
+	height: 20px;
+	text-indent: 10px;
+}
+
+.btn_ajax:hover{
+	cursor: pointer;
+	text-indent: 10px;
+}
+
+
