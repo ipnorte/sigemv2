@@ -275,6 +275,42 @@
 
 
 		<?php endif;?>
+                
+                <?php if(!empty($total_liquidados_no_rendidos)):?>
+
+                <tr class="grilla_texto_error">
+                        <td><strong>NO RENDIDOS A LA FECHA [<?php echo $total_liquidados_no_rendidos['cantidad']?>]</strong></td>
+                        <td align="right"><strong><?php echo $util->nf($total_liquidados_no_rendidos['total'])?></strong></td>
+                        <td><?php echo $controles->botonGenerico('/mutual/liquidaciones/resumen_cruce_informacion_no_encontrados_pdf/'.$liquidacion['Liquidacion']['id'].'/0','controles/pdf.png',null,array('target' => 'blank'))?></td>
+                        <td align="center">
+                            <?php echo $controles->botonGenerico('/mutual/liquidaciones/resumen_cruce_informacion_no_encontrados_xls/'.$liquidacion['Liquidacion']['id'],'controles/ms_excel.png',null,array('target' => 'blank'))?>
+                        </td>
+                </tr>
+                <?php endif;?>
+
+
+                <?php if(!empty($total_mora_cuota_uno)):?>
+
+                <tr class="grilla_error">
+                    <td><?php echo $html->image('controles/error.png',array('border'=>0))?>&nbsp;<strong>MORA PRIMER CUOTA</strong>&nbsp;[<?php echo $total_mora_cuota_uno?> ORDENE/S]</td>
+                    <td></td>
+                    <td><?php echo $controles->botonGenerico('/mutual/liquidaciones/mora_cuota_uno_pdf/'.$liquidacion['Liquidacion']['id'].'/0','controles/pdf.png',null,array('target' => 'blank'))?></td>
+                    <td><?php echo $controles->botonGenerico('/mutual/liquidaciones/mora_cuota_uno_xls/'.$liquidacion['Liquidacion']['id'],'controles/ms_excel.png',null,array('target' => 'blank'))?></td>
+                </tr>
+
+                <?php endif;?>
+
+                <?php if(!empty($total_mora_temprana)):?>
+
+                <tr class="grilla_error">
+                    <td><?php echo $html->image('controles/error.png',array('border'=>0))?>&nbsp;<strong>MORA TEMPRANA</strong>&nbsp;[<?php echo $total_mora_temprana?> ORDENE/S]</td>
+                    <td></td>
+                    <td><?php echo $controles->botonGenerico('/mutual/liquidaciones/mora_temprana_pdf/'.$liquidacion['Liquidacion']['id'].'/0','controles/pdf.png',null,array('target' => 'blank'))?></td>
+                    <td><?php echo $controles->botonGenerico('/mutual/liquidaciones/mora_temprana_xls/'.$liquidacion['Liquidacion']['id'],'controles/ms_excel.png',null,array('target' => 'blank'))?></td>
+                </tr>
+
+                <?php endif;?>                
+                
 
 	</table>
 <?php endif;?>

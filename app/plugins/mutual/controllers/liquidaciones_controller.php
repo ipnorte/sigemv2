@@ -2063,6 +2063,10 @@ class LiquidacionesController extends MutualAppController{
 				$this->set('total_imputado',$oLC->getTotalImputadoByLiquidacion($id));
 				$this->set('total_liquidados_no_rendidos_0',$oLS->totalLiquidadosNoRendidosEnArchivos($id,false,true,0));
 				$this->set('total_liquidados_no_rendidos_1',$oLS->totalLiquidadosNoRendidosEnArchivos($id,false,true,1));
+                                
+				$this->set('total_mora_cuota_uno',$oLC->get_detalle_mora_cuota($id,1,TRUE));
+				$this->set('total_mora_temprana',$oLC->get_detalle_mora_temprana($id,TRUE));
+                               
 
 				if($toPDF==1) $this->render('reportes/resumen_cruce_informacion_cjp_pdf','pdf');
 

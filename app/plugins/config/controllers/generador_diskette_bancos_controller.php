@@ -4138,9 +4138,12 @@ class GeneradorDisketteBancosController extends AppController {
                         $cadena .= "\r\n";
 
                         $datos['unificado'][] = $cadena;
-                        $datos['por_codigo'][$fila['tipo']][] = $cadena;
+                        
+                        $prefix = strtoupper(substr($cadena, 0, 1));
+                        $sufix = substr($cadena, 1, strlen($cadena));
+                        $datos['por_codigo'][$fila['tipo']][] = ( $prefix == 'J' ? 1 : 0 ) . $sufix;
                     }
-
+                    
                     $fileName = str_replace(".", "-", $this->data['GeneradorDisketteBanco']['archivo_datos']['name']);
                     $UUID = String::uuid();
                     $diskette = array(
