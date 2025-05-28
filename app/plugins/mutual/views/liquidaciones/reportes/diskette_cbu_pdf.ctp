@@ -1,4 +1,4 @@
-<?
+<?php 
 //debug($socios_error_cbu);
 //debug($resumenTurnos);
 //exit;

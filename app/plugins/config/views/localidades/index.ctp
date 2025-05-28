@@ -1,5 +1,5 @@
 <?php echo $this->renderElement('head',array('title' => 'LOCALIDADES'))?>
-<div class="actions"><?echo $controles->botonGenerico('add','controles/add.png','Nueva Localidad')?></div>
+<div class="actions"><?php echo $controles->botonGenerico('add','controles/add.png','Nueva Localidad')?></div>
 
 <div class="areaDatoForm">
     <h3>Búsqueda de Localidades</h3>

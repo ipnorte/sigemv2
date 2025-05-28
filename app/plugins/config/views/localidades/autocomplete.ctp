@@ -1,7 +1,7 @@
 <ul>
  <?php foreach($localidades as $localidad): ?>
  
- <?
+ <?php 
 
  	$nombre = utf8_encode(trim($localidad['Localidad']['nombre']));
  	$cp = trim($localidad['Localidad']['cp']);

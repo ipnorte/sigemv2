@@ -51,12 +51,12 @@
 				<td>#<?php echo $solicitud['proveedores_productos']['codigo_producto']?> - <strong><?php echo $solicitud['proveedores']['razon_social']?></strong> - <?php echo $solicitud['proveedores_productos']['producto']?></td>
 				<td align="right"><?php echo number_format($solicitud['Solicitud']['en_mano'],2)?></td>
 				<td align="center"><?php echo $solicitud['Solicitud']['cuotas']?></td>
-				<?php if($solicitud['Solicitud']['recibo_id'] > 0):?><td><? echo $html->link($solicitud['Solicitud']['recibo_link'],'/v1/solicitudes/editRecibo/'.$solicitud['Solicitud']['recibo_id']. '/'.$solicitud['Solicitud']['nro_solicitud'], array('target' => 'blank'))?></td>
-				<?php else:?><td><? echo $controles->botonGenerico('/v1/solicitudes/addRecibo/'.$solicitud['Solicitud']['nro_solicitud'],'controles/book_open.png','') ?></td>
+				<?php if($solicitud['Solicitud']['recibo_id'] > 0):?><td><?php echo $html->link($solicitud['Solicitud']['recibo_link'],'/v1/solicitudes/editRecibo/'.$solicitud['Solicitud']['recibo_id']. '/'.$solicitud['Solicitud']['nro_solicitud'], array('target' => 'blank'))?></td>
+				<?php else:?><td><?php echo $controles->botonGenerico('/v1/solicitudes/addRecibo/'.$solicitud['Solicitud']['nro_solicitud'],'controles/book_open.png','') ?></td>
 				<?php endif; ?>
 
-				<?php if($solicitud['Solicitud']['orden_pago_id'] > 0):?><td><? echo $html->link($solicitud['Solicitud']['orden_pago_link'],'/v1/solicitudes/editOrdenPago/'.$solicitud['Solicitud']['orden_pago_id']. '/'.$solicitud['Solicitud']['nro_solicitud'], array('target' => 'blank'))?></td>
-				<?php else:?><td><? echo $controles->botonGenerico('/v1/solicitudes/addOrdenPago/'.$solicitud['Solicitud']['nro_solicitud'],'controles/zone_money.png','') ?></td>
+				<?php if($solicitud['Solicitud']['orden_pago_id'] > 0):?><td><?php echo $html->link($solicitud['Solicitud']['orden_pago_link'],'/v1/solicitudes/editOrdenPago/'.$solicitud['Solicitud']['orden_pago_id']. '/'.$solicitud['Solicitud']['nro_solicitud'], array('target' => 'blank'))?></td>
+				<?php else:?><td><?php echo $controles->botonGenerico('/v1/solicitudes/addOrdenPago/'.$solicitud['Solicitud']['nro_solicitud'],'controles/zone_money.png','') ?></td>
 				<?php endif; ?>
 			</tr>
 		<?php endforeach;?>

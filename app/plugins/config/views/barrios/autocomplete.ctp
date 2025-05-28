@@ -1,7 +1,7 @@
 <ul>
  <?php foreach($barrios as $barrio): ?>
  
- <?
+ <?php
 
  	$nombre = trim($barrio['Barrio']['nombre']);
  	$cp = trim($barrio['Localidad']['cp']);

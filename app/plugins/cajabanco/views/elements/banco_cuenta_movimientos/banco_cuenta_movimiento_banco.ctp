@@ -86,7 +86,7 @@
 			<td align="right"><?php echo ($renglon['BancoCuentaMovimiento']['haber'] == 0 ? '' : number_format($renglon['BancoCuentaMovimiento']['haber'],2))?></td>
 			<td align="right"><?php echo number_format($saldo,2)?></td>
 			<?php if($renglon['BancoCuentaMovimiento']['tipo'] == 1 && $conciliacion == 0): ?>
-				<td align="center"><?echo ($renglon['BancoCuentaMovimiento']['anulado'] == 0 ? $controles->botonGenerico('reemplazar_cheque/'. $renglon['BancoCuentaMovimiento']['id'],'controles/12-em-cross.png', '', null, 'ESTA POR REEMPLAZAR EL CHEQUE\n NUMERO: ' . $renglon['BancoCuentaMovimiento']['numero_operacion']) : '');?></td>
+				<td align="center"><?php echo ($renglon['BancoCuentaMovimiento']['anulado'] == 0 ? $controles->botonGenerico('reemplazar_cheque/'. $renglon['BancoCuentaMovimiento']['id'],'controles/12-em-cross.png', '', null, 'ESTA POR REEMPLAZAR EL CHEQUE\n NUMERO: ' . $renglon['BancoCuentaMovimiento']['numero_operacion']) : '');?></td>
 			<?php else: ?>
 				<td></td>
 			<?php endif; ?>

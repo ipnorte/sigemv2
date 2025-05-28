@@ -271,7 +271,7 @@ endif;
 				<td></td>
 			</tr>
 		</table>
-	<? else: ?>
+	<?php else: ?>
 		<?php echo $frm->hidden("Recibo.importe_detalle_mostrar", array('value' => 0.00)); ?>
 	<?php endif; ?>	
 	<?php echo $frm->hidden("Recibo.importe_detalle", array('value' => 0.00)); ?>

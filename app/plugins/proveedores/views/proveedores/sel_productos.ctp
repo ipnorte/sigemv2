@@ -26,7 +26,7 @@ Event.observe(window, 'load', function() {
 </script>
 
 <div class="row">
-<?
+<?php 
 echo $frm->input('proveedor_id',array('type'=>'select','options'=>$proveedores,'empty'=>TRUE,'selected' => '','label'=>'PROVEEDOR','disabled' => ''));
 ?> 
 </div>

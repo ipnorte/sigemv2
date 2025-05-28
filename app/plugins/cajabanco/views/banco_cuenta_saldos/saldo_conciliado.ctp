@@ -62,7 +62,7 @@
 		<?php 
 			if($cuenta['BancoCuenta']['banco_cuenta_saldo_id'] == $conciliacion['BancoCuentaSaldo']['id'] && $cuenta['BancoCuenta']['banco_cuenta_saldo_alta_id'] != $conciliacion['BancoCuentaSaldo']['id']):
 		?>
-				<td align="center"><?echo $controles->botonGenerico('abrir_conciliacion/'. $conciliacion['BancoCuentaSaldo']['id'] . '/' . $cuenta['BancoCuenta']['id'],'controles/book_open.png', '', null, 'ESTA POR ABRIR LA CONCILIACION.\nESTA SEGURO? ');?></td>
+				<td align="center"><?php echo $controles->botonGenerico('abrir_conciliacion/'. $conciliacion['BancoCuentaSaldo']['id'] . '/' . $cuenta['BancoCuenta']['id'],'controles/book_open.png', '', null, 'ESTA POR ABRIR LA CONCILIACION.\nESTA SEGURO? ');?></td>
 		<?php 
 			else:
 		?>

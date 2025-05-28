@@ -8,7 +8,7 @@ endif;
 
 <?php echo $this->renderElement('head',array('plugin' => 'config','title' => $txtHeader))?>
 <div class="actions">
-<?echo $controles->botonGenerico('add/' . $tipo,'controles/add.png','Nuevo Concepto')?>
+<?php echo $controles->botonGenerico('add/' . $tipo,'controles/add.png','Nuevo Concepto')?>
 </div>
 
 <?php echo $this->renderElement('paginado')?>

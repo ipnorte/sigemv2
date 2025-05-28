@@ -1,4 +1,4 @@
-<?
+<?php 
 header ("Cache-Control: no-cache, must-revalidate");
 ob_start();
 ?>

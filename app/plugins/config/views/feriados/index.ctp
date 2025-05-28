@@ -1,5 +1,5 @@
 <?php echo $this->renderElement('head',array('title' => 'FERIADOS'))?>
-<div class="actions"><?echo $controles->botonGenerico('add','controles/add.png','Nuevo Feriado')?></div>
+<div class="actions"><?php echo $controles->botonGenerico('add','controles/add.png','Nuevo Feriado')?></div>
 <?php echo $this->renderElement('paginado')?>
 <table>
 	<tr>

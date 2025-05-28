@@ -16,7 +16,7 @@
 		<th>SALDO</th>
 		<th>REFERENCIA</th>
 		<th>ANULAR/BORRAR</th>
-		<th><?echo $controles->botonGenerico('imprimir_ctacte/'. $cliente['Cliente']['id'],'controles/printer.png',null, array('target' => 'blank'));?></th>
+		<th><?php echo $controles->botonGenerico('imprimir_ctacte/'. $cliente['Cliente']['id'],'controles/printer.png',null, array('target' => 'blank'));?></th>
                 <th></th>
 	</tr>
 	<?php

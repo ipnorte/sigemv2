@@ -1,5 +1,5 @@
 <?php echo $this->renderElement('head',array('title' => 'BARRIOS'))?>
-<div class="actions"><?echo $controles->botonGenerico('add','controles/add.png','Nuevo Barrio')?></div>
+<div class="actions"><?php echo $controles->botonGenerico('add','controles/add.png','Nuevo Barrio')?></div>
 <?php echo $this->renderElement('paginado')?>
 <table>
 

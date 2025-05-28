@@ -7,7 +7,7 @@ function toggleSubMenu(id){
 }
 //-->
 </script>
-<?
+<?php 
 $menus = $this->requestAction('/seguridad/permisos/menu/'.$grupo);
 //debug($menus);
 //print "<br>";

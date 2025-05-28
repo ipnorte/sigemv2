@@ -1,7 +1,7 @@
 <ul>
  <?php foreach($personas as $persona): ?>
  
- <?
+ <?php
 
  	$nombre = trim($persona['Persona']['nombre']);
  	$apellido = trim($persona['Persona']['apellido']);

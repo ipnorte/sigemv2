@@ -42,7 +42,7 @@
 			else:
 		?>
 <!--		<td><?php //echo $controles->botonGenerico('/cajabanco/banco_cuenta_saldos/view_planilla_caja/'.$planilla['BancoCuentaSaldo']['id'].'/0','controles/pdf.png', null, array('target' => '_blank', 'id' => 'pdf'));?></td>-->
-		<td><strong><? echo $html->link('Planilla Nro.: ' . $planilla['BancoCuentaSaldo']['numero'],'/cajabanco/banco_cuenta_saldos/view_planilla_caja/'.$planilla['BancoCuentaSaldo']['id'].'/0', array('target' => '_blank', 'id' => 'pdf'))?></strong>
+		<td><strong><?php echo $html->link('Planilla Nro.: ' . $planilla['BancoCuentaSaldo']['numero'],'/cajabanco/banco_cuenta_saldos/view_planilla_caja/'.$planilla['BancoCuentaSaldo']['id'].'/0', array('target' => '_blank', 'id' => 'pdf'))?></strong>
 <!--		<td><?php // echo $controles->linkModalBox($planilla['BancoCuentaSaldo']['numero'],array('title' => 'PLANILLA NRO.' . $planilla['BancoCuentaSaldo']['numero'],'url' => '/cajabanco/banco_cuenta_saldos/view_planilla_caja/'.$planilla['BancoCuentaSaldo']['id'].'/0','h' => 450, 'w' => 950))?></td>-->
 		<?php 
 			endif;
@@ -59,7 +59,7 @@
 		<?php 
 			if($cuenta['BancoCuenta']['banco_cuenta_saldo_alta_id'] != $planilla['BancoCuentaSaldo']['id']):
 		?>
-				<td align="center"><?echo $controles->botonGenerico('abrir_planilla/'. $planilla['BancoCuentaSaldo']['id'] . '/' . $cuenta['BancoCuenta']['id'],'controles/book_open.png', '', null, 'ESTA POR ABRIR LA PLANILLA DE CAJA\nNRO.' . $planilla['BancoCuentaSaldo']['numero'] . ' Y POSTERIORES\nESTA SEGURO? ');?></td>
+				<td align="center"><?php echo $controles->botonGenerico('abrir_planilla/'. $planilla['BancoCuentaSaldo']['id'] . '/' . $cuenta['BancoCuenta']['id'],'controles/book_open.png', '', null, 'ESTA POR ABRIR LA PLANILLA DE CAJA\nNRO.' . $planilla['BancoCuentaSaldo']['numero'] . ' Y POSTERIORES\nESTA SEGURO? ');?></td>
 		<?php 
 			else:
 		?>

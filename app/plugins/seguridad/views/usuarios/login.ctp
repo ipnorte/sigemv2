@@ -28,7 +28,7 @@ window.onload=function(){document.getElementById('UsuarioUsuario').focus();};
 			</tr>
 			<tr>
 				<td colspan="2">
-					<?
+					<?php 
 						if ($session->check('Message.auth') && !$session->flash('auth')):
 							echo "<div class='notices_error'>";
 					 		$session->flash('auth'); 

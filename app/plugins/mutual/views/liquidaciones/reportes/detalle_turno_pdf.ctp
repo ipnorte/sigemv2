@@ -1,4 +1,4 @@
-<?
+<?php 
 App::import('Vendor','listado_pdf');
 
 $PDF = new ListadoPDF();

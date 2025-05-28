@@ -1,8 +1,3 @@
-
-<?
-//echo $frm->input('mutual_producto_id',array('type'=>'select','options'=>$productos,'empty'=>TRUE,'selected' => '','label'=>'PRODUCTO','disabled' => ''));
-?> 
-
 <h4><?php echo $proveedor['Proveedor']['razon_social']?></h4>
 <table>
 

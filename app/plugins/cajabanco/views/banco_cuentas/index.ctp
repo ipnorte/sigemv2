@@ -1,6 +1,6 @@
 <?php echo $this->renderElement('head',array('plugin' => 'config','title' => 'CONFIGURACION DE CUENTAS BANCARIAS'))?>
 <div class="actions">
-<?echo $controles->botonGenerico('add','controles/add.png','Nueva Cuenta')?>
+<?php echo $controles->botonGenerico('add','controles/add.png','Nueva Cuenta')?>
 </div>
 
 <?php echo $this->renderElement('paginado')?>
