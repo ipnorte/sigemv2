@@ -8,10 +8,10 @@ BASE_DIR="app"
 
 # Lista de servidores (alias SSH definidos en ~/.ssh/config)
 SERVERS=(
-    # "ipnorte.ar"
-    # "soluciones"
-    # "platilandia"
-    # "ryvsa"
+    "ipnorte.ar"
+    "soluciones"
+    "platilandia"
+    "ryvsa"
     "mutualaman"
 )
 

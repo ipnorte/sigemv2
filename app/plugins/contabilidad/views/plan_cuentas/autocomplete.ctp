@@ -1,7 +1,7 @@
 <ul>
  <?php foreach($cuentas as $cuenta): ?>
  
- <?
+ <?php
 
 	$descripcion = $cuenta['PlanCuenta']['codigo'].' - '.$cuenta['PlanCuenta']['descripcion'];
  	
