@@ -2709,7 +2709,7 @@ class GeneradorDisketteBancosController extends AppController {
 
     }
 
-    public function unificar_comafi($UID = null,$download = 0){
+    public function unificar_comafi($UID = null, $tipo = 1, $download = 0, $liquidacion = null){
 
         $files = array();
 
@@ -2719,17 +2719,38 @@ class GeneradorDisketteBancosController extends AppController {
 
             if($download){
 
-                Configure::write('debug',0);
-                header("Content-type: text/plain");
-                header('Content-Disposition: attachment;filename="BANCO_COMAFI_UNIFICADO.txt');
-                header('Cache-Control: max-age=0');
-                if(!empty($files)){
-                    foreach($files as $file){
-                        if(!empty($file['registros'])){
-                            foreach($file['registros'] as $registro){
-                                echo $registro . "\r\n";
+                if ($tipo == 1) {
+                    Configure::write('debug',0);
+                    @ob_end_clean(); 
+                    header("Content-type: text/plain");
+                    header('Content-Disposition: attachment;filename="BANCO_COMAFI_UNIFICADO.txt');
+                    header('Cache-Control: max-age=0');
+                    if(!empty($files)){
+                        foreach($files as $file){
+                            if(!empty($file['registros'])){
+                                foreach($file['registros'] as $registro){
+                                    echo rtrim($registro, "\r\n") . "\r\n";
+                                }
                             }
                         }
+                    }
+                }
+                
+                if ( $tipo == 2) {
+                    
+                    Configure::write('debug',0);
+                    @ob_end_clean(); 
+                    
+                    $nombreArchivo = $files[$liquidacion]['archivo'];
+                    $registros = $files[$liquidacion]['registros'];                    
+                    
+                    header("Content-Type: text/plain");
+                    header("Content-Disposition: attachment; filename=\"$nombreArchivo\"");
+                    header("Cache-Control: max-age=0");
+                    header("Content-Transfer-Encoding: binary");
+                    $lastIndex = count($registros) - 1;
+                    foreach ($registros as $i => $registro) {
+                        echo rtrim($registro, "\r\n") . "\r\n";
                     }
                 }
                 exit;
@@ -2740,33 +2761,49 @@ class GeneradorDisketteBancosController extends AppController {
             $UID = String::uuid();
         }
 
-
         if(!empty($this->data)){
-
-
 
             if($this->data['GeneradorDisketteBanco']['archivo_datos']['error'] == 0){
 
-                $registros = $this->leerArchivo($this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name']);
-                foreach ($registros as $i => $registro) {
-                    $registros[$i] = preg_replace("[^A-Za-z0-9]", "",$registro);
+                if ($tipo == 1) {
+                    
+                    $registros = $this->leerArchivo($this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name']);
+                    foreach ($registros as $i => $registro) {
+                        $registros[$i] = preg_replace("[^A-Za-z0-9]", "",$registro);
+                    }
+
+                    // sacar el total
+                    $TOTAL = 0;
+                    foreach ($registros as $registro) {
+                        $TOTAL += intval(substr($registro,61,10)) / pow(10,2);
+                    }
+
+                    array_push($files,array('file' => $this->data['GeneradorDisketteBanco']['archivo_datos'], 'registros' => $registros, 'total' => $TOTAL));  
+                     $this->Session->write($UID."_FILES",$files);
                 }
                 
-                // sacar el total
-                $TOTAL = 0;
-                foreach ($registros as $registro) {
-                    $TOTAL += intval(substr($registro,61,10)) / pow(10,2);
+                if ( $tipo == 2) {
+                    
+                    $this->Session->del($UID . "_FILES");
+                    App::import('Model','Mutual.LiquidacionIntercambio');
+                    $oLQI = new LiquidacionIntercambio();    
+                    $files = $oLQI->subdividirLotePorLiquidacion(
+                            '00299', 
+                            $this->data['GeneradorDisketteBanco']['archivo_datos']['name'], 
+                            $this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name'], 
+                            $this->Session
+                    );
+                     $this->Session->write($UID."_FILES",$files);
+                    
                 }
-
-                array_push($files,array('file' => $this->data['GeneradorDisketteBanco']['archivo_datos'], 'registros' => $registros, 'total' => $TOTAL));
-
-                $this->Session->write($UID."_FILES",$files);
 
             }
 
         }
+        
         $this->set('UID',$UID);
         $this->set('files',$files);
+        $this->set('tipo',$tipo);
 
     }
 

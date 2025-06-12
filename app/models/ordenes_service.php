@@ -391,10 +391,17 @@ class OrdenesService extends SIGEMService{
         
         App::import('model','Mutual.MutualProductoSolicitudService');
         $oSOLSERV = new MutualProductoSolicitudService();
+        /*
         $conditions = " WHERE MutualProductoSolicitud.aprobada = $aprobada AND MutualProductoSolicitud.estado = ".($aprobada == 0 ? "'MUTUESTA0002'" : "'MUTUESTA0014'")."
                         AND (Proveedor.codigo_acceso_ws = '$pin' OR ProveedorReasigna.codigo_acceso_ws = '$pin')
                         AND MutualProductoSolicitud.".(!$byFechaPago ? "fecha" : "fecha_pago")." BETWEEN '$fechaDesde' AND '$fechaHasta'
                         ORDER BY MutualProductoSolicitud.fecha LIMIT $OFFSET, ".$this->ROWS.";";
+        */
+        $conditions = " WHERE MutualProductoSolicitud.aprobada = $aprobada AND MutualProductoSolicitud.anulada = 0
+                        AND (Proveedor.codigo_acceso_ws = '$pin' OR ProveedorReasigna.codigo_acceso_ws = '$pin')
+                        AND MutualProductoSolicitud.".(!$byFechaPago ? "fecha" : "fecha_pago")." BETWEEN '$fechaDesde' AND '$fechaHasta'
+                        ORDER BY MutualProductoSolicitud.fecha LIMIT $OFFSET, ".$this->ROWS.";";        
+        
         $solicitudes = $oSOLSERV->getSolicitudes($conditions);
         
         if(!empty($solicitudes)) {

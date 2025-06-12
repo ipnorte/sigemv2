@@ -160,11 +160,11 @@ class AppController extends Controller{
 		$userLogin = $this->Seguridad->user();
 		$userLogin = $userLogin['Usuario'];
 		
-		if(!empty($userLogin) && $userLogin['reset_password'] === 1) $this->redirect('/seguridad/usuarios/password_check');
+		// if(!empty($userLogin) && $userLogin['reset_password'] === 1) $this->redirect('/seguridad/usuarios/password_check');
 		if(!empty($userLogin) && isset($userLogin['caduca'])){
 			$mkTFC_1 = mktime(date('H'),date('m'),date('i'),date('m'),date('d'),date('Y'));
 			$mkTFC_2 = mktime(date('H',strtotime($userLogin['caduca'])),date('m',strtotime($userLogin['caduca'])),date('i',strtotime($userLogin['caduca'])),date('m',strtotime($userLogin['caduca'])),date('d',strtotime($userLogin['caduca'])),date('Y',strtotime($userLogin['caduca'])));
-			if($mkTFC_1 > $mkTFC_2) $this->redirect('/seguridad/usuarios/password_check');
+			// if($mkTFC_1 > $mkTFC_2) $this->redirect('/seguridad/usuarios/password_check');
 		}
 		#######################################################################################################	
             

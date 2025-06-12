@@ -31,10 +31,11 @@ class SMTPMailer extends \PHPMailer\PHPMailer\PHPMailer{
         $this->Username = $INI_FILE['general']['php_mailer_user'];
         $this->Password = $INI_FILE['general']['php_mailer_pass'];
         $this->Port = $INI_FILE['general']['php_mailer_pop3_port'];
+        $this->SMTPSecure = true;
         $FROM = (isset($INI_FILE['general']['php_mailer_from']) ? $INI_FILE['general']['php_mailer_from'] : $INI_FILE['general']['php_mailer_user']);
         $this->setFrom($FROM,$INI_FILE['general']['nombre_fantasia']);
         $this->setLanguage('es', '/PHPMailer/language/');
-        // $this->SMTPDebug = 2;
+        $this->SMTPDebug = 1;
     }
     
     public function sendEmailBlankPassword($userEmail,$userNick,$userDescrip){
