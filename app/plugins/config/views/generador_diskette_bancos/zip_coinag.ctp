@@ -1,4 +1,4 @@
-<?php echo $this->renderElement('head',array('title' => 'BANCO COINAG - UNIFICAR ARCHIVOS Y GENERAR ZIP'))?>
+<?php echo $this->renderElement('head',array('title' => 'BANCO COINAG - UNIFICAR ARCHIVOS Y GENERAR ZIP - DIVIDIR POR LIQUIDACION'))?>
 <?php echo $this->renderElement('generador_diskette_bancos/menu',array('plugin' => 'config'))?>
 <div class="areaDatoForm">
     <h3>BANCO COINAG - UNIFICAR ARCHIVOS Y GENERAR ZIP</h3>
