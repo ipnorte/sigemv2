@@ -3081,7 +3081,7 @@ class GeneradorDisketteBancosController extends AppController {
     }
 
 
-    function zip_coinag($UID = NULL,$download = 0){
+    function zip_coinag($UID = NULL,$download = 0, $tipo = 1, $liquidacion = null){
 
 
         $files = array();
@@ -3093,63 +3093,89 @@ class GeneradorDisketteBancosController extends AppController {
             if($download){
 
                 if(!empty($files)){
+                    
+                    
+                    if ($tipo == 1) {
+                        
+                        $header = $footer = NULL;
+                        $registros = array();
+                        $fileInfo = $this->Session->read($UID."_FILE_INFO");
 
-                    $header = $footer = NULL;
-                    $registros = array();
-                    $fileInfo = $this->Session->read($UID."_FILE_INFO");
+                        $nReg = $mTot = 0;
 
-                    $nReg = $mTot = 0;
+                        foreach($files as $file){
 
-                    foreach($files as $file){
+                            $header = array_shift($file['registros']);
+                            $footer = array_pop($file['registros']);
 
-                        $header = array_shift($file['registros']);
-                        $footer = array_pop($file['registros']);
-
-                        foreach($file['registros'] as $registro){
-                            array_push($registros,$registro);
+                            foreach($file['registros'] as $registro){
+                                array_push($registros,$registro);
+                            }
                         }
+
+                        App::import('Model','Config.Banco');
+                        $oBANCO = new Banco();
+
+                        $toZip = array();
+                        $toZipSTR = $header."\r\n";
+                        array_push($toZip,$header);
+                        foreach($registros as $registro){
+                            array_push($toZip,$registro);
+                            $toZipSTR .= $registro."\r\n";
+                            $decode = $oBANCO->decode_str_debito_coinag($registro);
+                            $mTot += $decode['importe_debitado'];
+                            $nReg++;
+                        }
+
+                        $footer = $oBANCO->arma_str_debito_coinag(array($nReg,$mTot),'T');
+
+                        array_push($toZip,$footer);
+                        $toZipSTR .= $footer."\r\n";
+
+                        $INI_FILE = parse_ini_file(CONFIGS.'mutual.ini', true);
+                        $entidad = (isset($INI_FILE['intercambio']['coinag_empresa_entidad']) && $INI_FILE['intercambio']['coinag_empresa_entidad'] != 0 ? $INI_FILE['intercambio']['coinag_empresa_entidad'] : '0000');
+
+                        $zipname = $entidad."G". $fileInfo['periodo'].".ZIP";
+
+                        $file = WWW_ROOT . "files" . DS . "reportes" . DS . $zipname;
+
+                        $zip = new ZipArchive();
+                        if ($zip->open($file, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+                            $result = $zip->addFromString($fileInfo['name'], $toZipSTR);
+                            $zip->close();
+                        }
+
+                        header('Content-Type: application/zip');
+                        header('Content-disposition: attachment; filename='.$zipname);
+                        header('Content-Length: ' . filesize($file));
+                        readfile($file);
+
+                        unlink($file);
+
+                        exit();                        
+                        
                     }
 
-                    App::import('Model','Config.Banco');
-                    $oBANCO = new Banco();
+                    if ( $tipo == 2) {
+                        
+                        Configure::write('debug',0);
+                        @ob_end_clean(); 
+                        $nombreArchivo = $files[$liquidacion]['archivo'];
+                        $registros = $files[$liquidacion]['registros'];                    
 
-                    $toZip = array();
-                    $toZipSTR = $header."\r\n";
-                    array_push($toZip,$header);
-                    foreach($registros as $registro){
-                        array_push($toZip,$registro);
-                        $toZipSTR .= $registro."\r\n";
-                        $decode = $oBANCO->decode_str_debito_coinag($registro);
-                        $mTot += $decode['importe_debitado'];
-                        $nReg++;
+                        header("Content-Type: text/plain");
+                        header("Content-Disposition: attachment; filename=\"$nombreArchivo\"");
+                        header("Cache-Control: max-age=0");
+                        header("Content-Transfer-Encoding: binary");
+                        $lastIndex = count($registros) - 1;
+                        echo $files[$liquidacion]['cabecera'];
+                        foreach ($registros as $i => $registro) {
+                            echo rtrim($registro, "\r\n") . "\r\n";
+                        }     
+                        echo $files[$liquidacion]['pie'];
+                        exit();
+                        
                     }
-
-                    $footer = $oBANCO->arma_str_debito_coinag(array($nReg,$mTot),'T');
-
-                    array_push($toZip,$footer);
-                    $toZipSTR .= $footer."\r\n";
-
-                    $INI_FILE = parse_ini_file(CONFIGS.'mutual.ini', true);
-                    $entidad = (isset($INI_FILE['intercambio']['coinag_empresa_entidad']) && $INI_FILE['intercambio']['coinag_empresa_entidad'] != 0 ? $INI_FILE['intercambio']['coinag_empresa_entidad'] : '0000');
-
-                    $zipname = $entidad."G". $fileInfo['periodo'].".ZIP";
-                    
-                    $file = WWW_ROOT . "files" . DS . "reportes" . DS . $zipname;
-
-                    $zip = new ZipArchive();
-                    if ($zip->open($file, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-                        $result = $zip->addFromString($fileInfo['name'], $toZipSTR);
-                        $zip->close();
-                    }
-                    
-                    header('Content-Type: application/zip');
-                    header('Content-disposition: attachment; filename='.$zipname);
-                    header('Content-Length: ' . filesize($file));
-                    readfile($file);
-
-                    unlink($file);
-
-                    exit();
 
                 }
 
@@ -3168,83 +3194,71 @@ class GeneradorDisketteBancosController extends AppController {
             if($this->data['GeneradorDisketteBanco']['archivo_datos']['error'] == 0){
 
 
-                # CONTROLAR LOS NOMBRES DE ARCHIVO PARA ARMAR EL ZIP
-                $info = new SplFileInfo($this->data['GeneradorDisketteBanco']['archivo_datos']['name']);
-                $name = $info->getBasename();
-                $ext = $info->getExtension();
-                $baseName = $info->getBasename('.' . $info->getExtension());
-                $periodo = substr($baseName,-4);
+                if ($tipo == 1) {
+                    
+                    # CONTROLAR LOS NOMBRES DE ARCHIVO PARA ARMAR EL ZIP
+                    $info = new SplFileInfo($this->data['GeneradorDisketteBanco']['archivo_datos']['name']);
+                    $name = $info->getBasename();
+                    $ext = $info->getExtension();
+                    $baseName = $info->getBasename('.' . $info->getExtension());
+                    $periodo = substr($baseName,-4);
 
-                $fileInfo = $this->Session->read($UID."_FILE_INFO");
+                    $fileInfo = $this->Session->read($UID."_FILE_INFO");
 
 
 
-                if(!empty($fileInfo)){
+                    if(!empty($fileInfo)){
 
-                    #control de periodo
-                    if($fileInfo['periodo'] != $periodo){
+                        #control de periodo
+                        if($fileInfo['periodo'] != $periodo){
 
-                        //$ERROR = true;
-                        //$this->Mensaje->error("LOS ARCHIVOS DEBEN PERTENECER AL MISMO PERIODO : " . $fileInfo['periodo']);
+                            //$ERROR = true;
+                            //$this->Mensaje->error("LOS ARCHIVOS DEBEN PERTENECER AL MISMO PERIODO : " . $fileInfo['periodo']);
 
-                    } else if($fileInfo['ext'] != $ext){
+                        } else if($fileInfo['ext'] != $ext){
 
-                        $ERROR = true;
-                        $this->Mensaje->error("LOS ARCHIVOS DEBEN PERTENECER AL MISMO CONVENIO : " . $fileInfo['ext']);
+                            $ERROR = true;
+                            $this->Mensaje->error("LOS ARCHIVOS DEBEN PERTENECER AL MISMO CONVENIO : " . $fileInfo['ext']);
 
+                        }
+
+                    }else{
+
+                        $this->Session->write($UID."_FILE_INFO",array('name' => $name, 'ext' => $ext, 'periodo' => $periodo));
                     }
 
-                }else{
 
-                    $this->Session->write($UID."_FILE_INFO",array('name' => $name, 'ext' => $ext, 'periodo' => $periodo));
+                    if(!$ERROR){
+
+                        $registros = $this->leerArchivo($this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name']);
+                        array_push($files,array('file' => $this->data['GeneradorDisketteBanco']['archivo_datos'], 'registros' => $registros));
+                        $this->Session->write($UID."_FILES",$files);
+
+                    }                    
+                    
+                }
+                
+                if ( $tipo == 2) {
+                    
+                    $this->Session->del($UID . "_FILES");
+                    App::import('Model','Mutual.LiquidacionIntercambio');
+                    $oLQI = new LiquidacionIntercambio();    
+                    $files = $oLQI->subdividirLotePorLiquidacion(
+                            '00431', 
+                            $this->data['GeneradorDisketteBanco']['archivo_datos']['name'], 
+                            $this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name'], 
+                            $this->Session
+                    );
+                     $this->Session->write($UID."_FILES",$files);                    
+                    
                 }
 
-
-                if(!$ERROR){
-
-                    $registros = $this->leerArchivo($this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name']);
-                    array_push($files,array('file' => $this->data['GeneradorDisketteBanco']['archivo_datos'], 'registros' => $registros));
-                    $this->Session->write($UID."_FILES",$files);
-
-                }
-
-
-
-                // debug($this->Session);
-
-
-
-
-
-                // $info = new SplFileInfo($this->data['GeneradorDisketteBanco']['archivo_datos']['name']);
-
-                // $name = $info->getBasename();
-                // $baseName = $info->getBasename('.' . $info->getExtension());
-
-                // $INI_FILE = parse_ini_file(CONFIGS.'mutual.ini', true);
-                // $entidad = (isset($INI_FILE['intercambio']['coinag_empresa_entidad']) && $INI_FILE['intercambio']['coinag_empresa_entidad'] != 0 ? $INI_FILE['intercambio']['coinag_empresa_entidad'] : '0000');
-
-                // $zipname = $entidad."G". substr($baseName,-4).".ZIP";
-
-                // $zip = new ZipArchive();
-                // if( $zip->open($zipname, (ZipArchive::CREATE | ZipArchive::OVERWRITE) ) === TRUE ){
-                //     $zip->addFromString($name, file_get_contents($this->data['GeneradorDisketteBanco']['archivo_datos']['tmp_name']));
-                //     $zip->close();
-                // }
-
-                // header('Content-Type: application/zip');
-                // header('Content-disposition: attachment; filename='.$zipname);
-                // header('Content-Length: ' . filesize($zipname));
-                // readfile($zipname);
-
-                // unlink(WWW_ROOT.$zipname);
-
-                // exit();
 
             }
         }
         $this->set('UID',$UID);
         $this->set('files',$files);
+        $this->set('tipo',$tipo);
     }
 
 

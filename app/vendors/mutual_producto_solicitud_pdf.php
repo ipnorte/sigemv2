@@ -197,7 +197,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
     }
     
     
-	function imprimirDatosGenerales($nroSolicitud,$fecha,$usuario,$vendedor,$tipo="Solicitud de Préstamo"){
+	function imprimirDatosGenerales($nroSolicitud,$fecha,$usuario,$vendedor,$tipo="Solicitud de Préstamo", $blank = FALSE){
 
 		$size = 10;
                 if(!empty($nroSolicitud)){
@@ -215,7 +215,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                         $this->linea[2] = array(
                                         'posx' => 175,
                                         'ancho' => 25,
-                                        'texto' => $nroSolicitud,
+                                        'texto' => $blank ?  "" : $nroSolicitud,
                                         'borde' => '',
                                         'align' => 'R',
                                         'fondo' => 0,
@@ -243,7 +243,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                         $this->linea[2] = array(
                                         'posx' => 170,
                                         'ancho' => 30,
-                                        'texto' => $fecha,
+                                        'texto' => $blank ?  "" : $fecha,
                                         'borde' => '',
                                         'align' => 'R',
                                         'fondo' => 0,
@@ -268,7 +268,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                         $this->linea[3] = array(
                                         'posx' => 185,
                                         'ancho' => 15,
-                                        'texto' => $usuario,
+                                        'texto' => $blank ?  "" : $usuario,
                                         'borde' => '',
                                         'align' => 'R',
                                         'fondo' => 0,
@@ -283,7 +283,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 			$this->linea[1] = array(
 					'posx' => 100,
 					'ancho' => 100,
-					'texto' => "Vendedor: $vendedor",
+					'texto' => "Vendedor: " . $blank ?  "" : $vendedor,
 					'borde' => '',
 					'align' => 'R',
 					'fondo' => 0,
@@ -296,10 +296,16 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->ln(4);		
 	}
  
-	function imprimirDatosTitular($orden,$soloApenomTdocNdoc = FALSE,$header=TRUE){
+	function imprimirDatosTitular($orden,$soloApenomTdocNdoc = FALSE,$header=TRUE, $blank = FALSE){
 		
 		$size = 10;
 		$sized = 13;		
+                
+                
+                $val = function($dato) use ($blank) {
+                    return $blank ? '' : utf8_decode($dato);
+                };                
+                
 		if($header){
                     $this->linea[1] = array(
                                     'posx' => 10,
@@ -329,7 +335,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 				'size' => $sized
                 );
                 
-                $apenom = utf8_decode($orden['MutualProductoSolicitud']['beneficiario_apenom']);
+                $apenom = $val($orden['MutualProductoSolicitud']['beneficiario_apenom']);
 
 
                 $BORDER = (empty($orden) ? 'B' : '');
@@ -362,7 +368,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[2] = array(
 				'posx' => 40,
 				'ancho' => 30,
-				'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_tdocndoc']),
+				'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_tdocndoc']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -384,7 +390,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[4] = array(
 				'posx' => 130,
 				'ancho' => 30,
-				'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_cuit_cuil']),
+				'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_cuit_cuil']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -410,7 +416,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 55,
                                     'ancho' => 30,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_fecha_nacimiento']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_fecha_nacimiento']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -433,7 +439,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 102,
                                     'ancho' => 10,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_edad']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_edad']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -456,7 +462,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[6] = array(
                                     'posx' => 160,
                                     'ancho' => 40,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_estado_civil']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_estado_civil']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -483,7 +489,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 70,
                                     'ancho' => 70,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_calle']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_calle']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -505,7 +511,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 150,
                                     'ancho' => 10,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_numero_calle']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_numero_calle']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -527,7 +533,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[6] = array(
                                     'posx' => 185,
                                     'ancho' => 15,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_piso']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_piso']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -551,7 +557,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 27,
                                     'ancho' => 43,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_barrio']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_barrio']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -574,7 +580,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 95,
                                     'ancho' => 40,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_localidad']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_localidad']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -597,7 +603,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[6] = array(
                                     'posx' => 142,
                                     'ancho' => 10,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_cp']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_cp']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -620,7 +626,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[8] = array(
                                     'posx' => 174,
                                     'ancho' => 26,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_provincia']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_provincia']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -647,7 +653,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 25,
                                     'ancho' => 110,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_telefono_fijo']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_telefono_fijo']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -670,7 +676,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 155,
                                     'ancho' => 45,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_telefono_movil']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_telefono_movil']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -697,7 +703,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 35,
                                     'ancho' => 90,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_persona_referencia']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_persona_referencia']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -720,7 +726,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 140,
                                     'ancho' => 50,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_telefono_referencia']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficiario_telefono_referencia']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -738,9 +744,13 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		
 	}
 	
-	function imprimirDatosCuentaDebito($orden,$soloBanco=FALSE){
+	function imprimirDatosCuentaDebito($orden,$soloBanco=FALSE, $blank = TRUE){
 		$size = 10;
 		$sized = 13;		
+
+                $val = function($dato) use ($blank) {
+                    return $blank ? '' : utf8_decode($dato);
+                };                
 
 		$this->ln(4);
 		$this->linea[1] = array(
@@ -773,7 +783,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[2] = array(
 				'posx' => 25,
 				'ancho' => 110,
-				'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficio_banco']),
+				'texto' => $val($orden['MutualProductoSolicitud']['beneficio_banco']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -795,7 +805,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[4] = array(
 				'posx' => 160,
 				'ancho' => 30,
-				'texto' =>  utf8_decode($orden['MutualProductoSolicitud']['beneficio_sucursal']),
+				'texto' =>  $val($orden['MutualProductoSolicitud']['beneficio_sucursal']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -833,7 +843,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[3] = array(
 				'posx' => 110,
 				'ancho' => 60,
-				'texto' =>  utf8_decode($orden['MutualProductoSolicitud']['beneficio_cuenta']),
+				'texto' =>  $val($orden['MutualProductoSolicitud']['beneficio_cuenta']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -859,7 +869,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		$this->linea[2] = array(
 				'posx' => 45,
 				'ancho' => 110,
-				'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficio_cbu']),
+				'texto' => $val($orden['MutualProductoSolicitud']['beneficio_cbu']),
 				'borde' => $BORDER,
 				'align' => 'L',
 				'fondo' => 0,
@@ -884,7 +894,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 75,
                                     'ancho' => 55,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['organismo_desc']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['organismo_desc']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -906,7 +916,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[4] = array(
                                     'posx' => 162,
                                     'ancho' => 22,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficio_ingreso']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['beneficio_ingreso']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -917,7 +927,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[5] = array(
                                     'posx' => 184,
                                     'ancho' => 16,
-                                    'texto' => utf8_decode("(".$orden['MutualProductoSolicitud']['beneficio_antiguedad']." años)"),
+                                    'texto' => $val("(".$orden['MutualProductoSolicitud']['beneficio_antiguedad']." años)"),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -942,7 +952,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 65,
                                     'ancho' => 40,
-                        'texto' => (!empty($orden['MutualProductoSolicitud']['beneficio_legajo']) ? utf8_decode($orden['MutualProductoSolicitud']['beneficio_legajo']) : !empty($orden['MutualProductoSolicitud']['beneficio_str']) ? $orden['MutualProductoSolicitud']['beneficio_str']:""),
+                                    'texto' => $val((!empty($orden['MutualProductoSolicitud']['beneficio_legajo']) ? utf8_decode($orden['MutualProductoSolicitud']['beneficio_legajo']) : !empty($orden['MutualProductoSolicitud']['beneficio_str']) ? $orden['MutualProductoSolicitud']['beneficio_str']:"")),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -968,7 +978,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                     $this->linea[2] = array(
                                     'posx' => 40,
                                     'ancho' => 160,
-                                    'texto' => utf8_decode($orden['MutualProductoSolicitud']['turno_desc']),
+                                    'texto' => $val($orden['MutualProductoSolicitud']['turno_desc']),
                                     'borde' => $BORDER,
                                     'align' => 'L',
                                     'fondo' => 0,
@@ -986,7 +996,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                         $this->linea[1] = array(
                                         'posx' => 10,
                                         'ancho' => 190,
-                                        'texto' => utf8_decode("Tarjeta de Débito: " . $orden['MutualProductoSolicitud']['beneficio_tarjeta_numero'] . " | Titular: " . $orden['MutualProductoSolicitud']['beneficio_tarjeta_titular']),
+                                        'texto' => $val("Tarjeta de Débito: " . $orden['MutualProductoSolicitud']['beneficio_tarjeta_numero'] . " | Titular: " . $orden['MutualProductoSolicitud']['beneficio_tarjeta_titular']),
                                         'borde' => '',
                                         'align' => 'L',
                                         'fondo' => 0,
@@ -1000,7 +1010,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
                         $this->linea[1] = array(
                                         'posx' => 10,
                                         'ancho' => 30,
-                                        'texto' => utf8_decode("Sueldo Neto: " . number_format($orden['MutualProductoSolicitud']['sueldo_neto'],2,'.',''). " - Debitos Bancarios: " . number_format($orden['MutualProductoSolicitud']['debitos_bancarios'],2,'.','')),
+                                        'texto' => $val("Sueldo Neto: " . number_format($orden['MutualProductoSolicitud']['sueldo_neto'],2,'.',''). " - Debitos Bancarios: " . number_format($orden['MutualProductoSolicitud']['debitos_bancarios'],2,'.','')),
                                         'borde' => '',
                                         'align' => 'L',
                                         'fondo' => 0,
@@ -1066,7 +1076,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->ln(10);
         $size = 12;
         
-        $nroPagare = $orden['MutualProductoSolicitud']['nro_print'];
+        $nroPagare = ($emiteBlank ? "" : $orden['MutualProductoSolicitud']['nro_print']);
         
 
         
@@ -1089,7 +1099,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 
         $localidadPagare = strtoupper(($orden['MutualProductoSolicitud']['proveedor_localidad_pagare'] ? $orden['MutualProductoSolicitud']['proveedor_localidad_pagare'] : '_________________'));
         
-        $fechaPagare =  $localidadPagare . ", _____ de __________________ de ________";
+        $fechaPagare =  ($emiteBlank ? "" : $localidadPagare) . ", _____ de __________________ de ________";
         $vtoPagare = "____ de _______________ de ______";
         $aQuienPago = "_________________________________________";
         $recibidoEn = "efectivo";
@@ -2433,10 +2443,14 @@ class MutualProductoSolicitudPDF extends XTCPDF{
     }
     
     
-    function imprimir_producto_solicitado($orden){
+    function imprimir_producto_solicitado($orden, $blank = FALSE){
         
         $size = 10;
-        $sized = 13;        
+        $sized = 13; 
+        
+        $val = function($dato) use ($blank) {
+            return $blank ? '' : utf8_decode($dato);
+        };          
         
         $this->linea[1] = array(
                         'posx' => 10,
@@ -2478,7 +2492,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
             'posx' => 40,
             'ancho' => 20,
-            'texto' => number_format($orden['MutualProductoSolicitud']['importe_solicitado'],2),
+            'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_solicitado'],2)),
             'borde' => '',
             'align' => 'R',
             'fondo' => 0,
@@ -2489,7 +2503,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[3] = array(
             'posx' => 60,
             'ancho' => 145,
-            'texto' => "(Son Pesos " . utf8_decode($orden['MutualProductoSolicitud']['total_importe_solicitado_letras']) . ")",
+            'texto' => "(Son Pesos " . $val($orden['MutualProductoSolicitud']['total_importe_solicitado_letras']) . ")",
             'borde' => '',
             'align' => 'L',
             'fondo' => 0,
@@ -2527,7 +2541,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[2] = array(
                 'posx' => 40,
                 'ancho' => 20,
-                'texto' => number_format($totalDeducciones,2),
+                'texto' => $val(number_format($totalDeducciones,2)),
                 'borde' => '',
                 'align' => 'R',
                 'fondo' => 0,
@@ -2538,7 +2552,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[3] = array(
                 'posx' => 60,
                 'ancho' => 145,
-                'texto' => "(" . $cadena . ")",
+                'texto' => "(" . $val($cadena) . ")",
                 'borde' => '',
                 'align' => 'L',
                 'fondo' => 0,
@@ -2590,7 +2604,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[2] = array(
                             'posx' => 40,
                             'ancho' => 25,
-                            'texto' => number_format($orden['MutualProductoSolicitud']['importe_percibido'],2),
+                            'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_percibido'],2)),
                             'borde' => '',
                             'align' => 'L',
                             'fondo' => 0,
@@ -2614,7 +2628,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[4] = array(
                             'posx' => 105,
                             'ancho' => 25,
-                            'texto' => number_format($orden['MutualProductoSolicitud']['total_cancelacion'],2),
+                            'texto' => $val(number_format($orden['MutualProductoSolicitud']['total_cancelacion'],2)),
                             'borde' => '',
                             'align' => 'L',
                             'fondo' => 0,
@@ -2636,7 +2650,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[6] = array(
                             'posx' => 175,
                             'ancho' => 25,
-                            'texto' => number_format($orden['MutualProductoSolicitud']['importe_percibido'] - $orden['MutualProductoSolicitud']['total_cancelacion'],2),
+                            'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_percibido'] - $orden['MutualProductoSolicitud']['total_cancelacion'],2)),
                             'borde' => '',
                             'align' => 'R',
                             'fondo' => 1,
@@ -2661,7 +2675,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[2] = array(
                             'posx' => 60,
                             'ancho' => 25,
-                            'texto' => number_format($orden['MutualProductoSolicitud']['importe_percibido'],2),
+                            'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_percibido'],2)),
                             'borde' => '',
                             'align' => 'L',
                             'fondo' => 0,
@@ -2687,7 +2701,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
                         'posx' => 55,
                         'ancho' => 60,
-                        'texto' => utf8_decode($orden['MutualProductoSolicitud']['cantidad_cuota_letras']) . "(".$orden['MutualProductoSolicitud']['cuotas'].")",
+                        'texto' => $val(utf8_decode($orden['MutualProductoSolicitud']['cantidad_cuota_letras']) . "(".$orden['MutualProductoSolicitud']['cuotas'].")"),
                         'borde' => '',
                         'align' => 'L',
                         'fondo' => 0,
@@ -2709,7 +2723,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[4] = array(
                         'posx' => 160,
                         'ancho' => 40,
-                        'texto' => number_format($orden['MutualProductoSolicitud']['importe_cuota'],2),
+                        'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_cuota'],2)),
                         'borde' => '',
                         'align' => 'L',
                         'fondo' => 0,
@@ -2745,7 +2759,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
                         'posx' => 45,
                         'ancho' => 20,
-                        'texto' => number_format($orden['MutualProductoSolicitud']['importe_total'],2),
+                        'texto' => $val(number_format($orden['MutualProductoSolicitud']['importe_total'],2)),
                         'borde' => '',
                         'align' => 'R',
                         'fondo' => 0,
@@ -2756,7 +2770,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[3] = array(
             'posx' => 65,
             'ancho' => 145,
-            'texto' => "(Son Pesos " . utf8_decode($orden['MutualProductoSolicitud']['total_letras']) . ")",
+            'texto' => "(Son Pesos " . $val($orden['MutualProductoSolicitud']['total_letras']) . ")",
             'borde' => '',
             'align' => 'L',
             'fondo' => 0,
@@ -2768,11 +2782,15 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->Imprimir_linea();        
     }
     
-    function imprimir_liquidacion($orden,$imprimeInstruccion=true){
+    function imprimir_liquidacion($orden,$imprimeInstruccion = TRUE, $blank = TRUE){
         
         $size = 10;
-        $sized = 13;           
+        $sized = 13;     
         
+        $val = function($dato) use ($blank) {
+            return $blank ? '' : utf8_decode($dato);
+        };        
+
         $this->linea[1] = array(
                         'posx' => 10,
                         'ancho' => 190,
@@ -2801,7 +2819,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
                         'posx' => 45,
                         'ancho' => 80,
-                        'texto' => $orden['MutualProductoSolicitud']['forma_pago_desc'],
+                        'texto' => $val($orden['MutualProductoSolicitud']['forma_pago_desc']),
                         'borde' => '',
                         'align' => 'L',
                         'fondo' => 0,
@@ -2824,7 +2842,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             $this->linea[4] = array(
                             'posx' => 185,
                             'ancho' => 15,
-                            'texto' => (empty($orden['MutualProductoSolicitudInstruccionPago']) || count($orden['MutualProductoSolicitudInstruccionPago']) == 1 ? "NO" : "SI"),
+                            'texto' => $val((empty($orden['MutualProductoSolicitudInstruccionPago']) || count($orden['MutualProductoSolicitudInstruccionPago']) == 1 ? "NO" : "SI")),
                             'borde' => '',
                             'align' => 'L',
                             'fondo' => 0,
@@ -5670,13 +5688,17 @@ class MutualProductoSolicitudPDF extends XTCPDF{
     }
 
     
-    function imprimirRecibo($orden) {
+    function imprimirRecibo($orden, $blank = FALSE) {
 
         $this->AddPage();
         $this->reset();
         $size = 11;
         
 //         debug($orden);
+        
+        $val = function($dato) use ($blank) {
+            return $blank ? '' : utf8_decode($dato);
+        };        
         
         $this->SetFont('courier','',12);
         
@@ -5687,7 +5709,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[1] = array(
             'posx' => 10,
             'ancho' => 190,
-            'texto' => utf8_decode($fechaRecibo),
+            'texto' => ($blank ? "___ de _______________ de ______" : $fechaRecibo),
             'borde' => '',
             'align' => 'R',
             'fondo' => 0,
@@ -5711,7 +5733,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         );
         $this->linea[3] = array(
             'posx' => 30,
-            'ancho' => 60,
+            'ancho' => 70,
             'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_apenom']),
             'borde' => '',
             'align' => 'L',
@@ -5721,7 +5743,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             'size' => $size
         );
         $this->linea[4] = array(
-            'posx' => 90,
+            'posx' => 100,
             'ancho' => 10,
             'texto' => "DNI",
             'borde' => '',
@@ -5732,7 +5754,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
             'size' => $size
         );
         $this->linea[1] = array(
-            'posx' => 100,
+            'posx' => 110,
             'ancho' => 90,
             'texto' => utf8_decode($orden['MutualProductoSolicitud']['beneficiario_ndoc']),
             'borde' => '',
@@ -5754,7 +5776,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
             'posx' => 10,
             'ancho' => 20,
-            'texto' => utf8_decode("Recibí de " . $proveedorFullName),
+            'texto' => $val("Recibí de " . $proveedorFullName),
             'borde' => '',
             'align' => 'L',
             'fondo' => 0,
@@ -5780,7 +5802,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->linea[2] = array(
             'posx' => 60,
             'ancho' => 140,
-            'texto' => str_pad($orden['MutualProductoSolicitud']['total_importe_solicitado_letras']." ",59,'/',STR_PAD_RIGHT),
+            'texto' => $val(str_pad($orden['MutualProductoSolicitud']['total_importe_solicitado_letras']." ",59,'/',STR_PAD_RIGHT)),
             'borde' => '',
             'align' => 'L',
             'fondo' => 1,
@@ -5793,7 +5815,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         
 //         $TEXTO = "En concepto de liquidación de crédito Nro " . $orden['MutualProductoSolicitud']['nro_print'];
         $TEXTO = "En concepto de liquidación de crédito";
-        $TEXTO .= " otorgado a mi favor el día " . date('d/m/Y',strtotime($orden['MutualProductoSolicitud']['fecha']));
+        $TEXTO .= " otorgado a mi favor el día " . ($blank ? "___/____/_____" : date('d/m/Y',strtotime($orden['MutualProductoSolicitud']['fecha'])));
         $TEXTO .= " la cual me comprometo a restituir en los términos y condiciones pactados en el Contrato de Préstamo Personal.\n";
 
         $this->SetFont('courier','',11);
@@ -5806,7 +5828,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         
     }
     
-    function imprimirInstruccionDePago($orden){
+    function imprimirInstruccionDePago($orden, $blank = FALSE){
         
         $nroSolicitud = $orden['MutualProductoSolicitud']['nro_print'];
         $fecha = date('d-m-Y',strtotime($orden['MutualProductoSolicitud']['fecha']));
@@ -5818,7 +5840,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->reset();
         
         $this->ln(4);
-        $this->imprimirDatosGenerales($nroSolicitud,$fecha,$usuario,$vendedor);
+        $this->imprimirDatosGenerales($nroSolicitud,$fecha,$usuario,$vendedor,'Solicitud de Préstamo', $blank);
         $size = 10;
         $size = 16;
         $this->linea[1] = array(
