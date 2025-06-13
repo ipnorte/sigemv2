@@ -22,7 +22,7 @@ $tabs = array(
         10 => array('url' => '/config/generadorDisketteBancos/unificar_comafi','label' => 'UNIFICAR BANCO COMAFI', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
         // 11 => array('url' => '/config/generadorDisketteBancos/excel_cjpc','label' => 'PROCESAR CJPC', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
         12 => array('url' => '/config/generadorDisketteBancos/excel_bcocomer','label' => 'PROCESAR BANCO COMERCIO', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
-        13 => array('url' => '/config/generadorDisketteBancos/zip_coinag','label' => 'ZIP BANCO COINAG', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
+        13 => array('url' => '/config/generadorDisketteBancos/zip_coinag','label' => 'BANCO COINAG', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
         14 => array('url' => '/config/generadorDisketteBancos/bna','label' => 'BNA', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
         15 => array('url' => '/config/generadorDisketteBancos/unificar_cronocred','label' => 'UNIFICAR BANCO CRONOCRED', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
         16 => array('url' => '/config/generadorDisketteBancos/divide_celesol','label' => 'MUTUAL CELESOL * BCO.CORDOBA', 'icon' => 'controles/cog.png','atributos' => array(), 'confirm' => null),
