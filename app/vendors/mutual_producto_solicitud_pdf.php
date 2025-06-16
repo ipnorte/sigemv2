@@ -744,7 +744,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
 		
 	}
 	
-	function imprimirDatosCuentaDebito($orden,$soloBanco=FALSE, $blank = TRUE){
+	function imprimirDatosCuentaDebito($orden,$soloBanco=FALSE, $blank = FALSE){
 		$size = 10;
 		$sized = 13;		
 
@@ -2782,7 +2782,7 @@ class MutualProductoSolicitudPDF extends XTCPDF{
         $this->Imprimir_linea();        
     }
     
-    function imprimir_liquidacion($orden,$imprimeInstruccion = TRUE, $blank = TRUE){
+    function imprimir_liquidacion($orden,$imprimeInstruccion = TRUE, $blank = FALSE){
         
         $size = 10;
         $sized = 13;     
