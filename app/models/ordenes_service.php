@@ -419,8 +419,8 @@ class OrdenesService extends SIGEMService{
     private function cargarOrdenesAdeudadas($pin,$fechaDesde = NULL,$fechaHasta = NULL, $OFFSET = 0) {
         $ordenes = array();
         
-        $sql = "select s.id, FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO(o.id,
-                date_format(now(), '%Y%m' ),1,9999) as saldo from orden_descuentos o 
+        $sql = "select s.id, IFNULL(FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO(o.id,
+                date_format(now(), '%Y%m' ),1,9999),0) as saldo, IFNULL(FX_ORDENDTO_PENDIENTE_ACREDITAR(o.id),0) as pendiente from orden_descuentos o 
                 inner join mutual_producto_solicitudes s on s.id = o.mutual_producto_solicitud_id
                 inner join proveedores on (proveedores.id = o.proveedor_id and proveedores.codigo_acceso_ws = '$pin')
                 where o.fecha between '$fechaDesde' and '$fechaHasta'
@@ -434,7 +434,7 @@ class OrdenesService extends SIGEMService{
             foreach($datos as $row){
                 $solicitud = $oSOLICITUD->getOrden($row['s']['id']);
                 $solicitud = $oSOLICITUD->armaDatos($solicitud,false,true);
-                $solicitud = $this->armaDatoSolicitud($solicitud, $row['s']['saldo']);
+                $solicitud = $this->armaDatoSolicitud($solicitud, $row[0]['saldo'], $row[0]['pendiente']);
                 array_push($ordenes, $solicitud);
             }
         }
@@ -449,7 +449,7 @@ class OrdenesService extends SIGEMService{
      * @param array $solicitud
      * @return array
      */
-    private function armaDatoSolicitud($solicitud, $saldo = 0){
+    private function armaDatoSolicitud($solicitud, $saldo = 0, $pendienteAcreditar = 0){
 
         $datos = array();
         $datos['solicitud_numero'] = $solicitud['MutualProductoSolicitud']['id'];
@@ -466,11 +466,11 @@ class OrdenesService extends SIGEMService{
         $datos['solicitud_importe_percibido'] = $solicitud['MutualProductoSolicitud']['importe_percibido'];
         $datos['solicitud_inicia_en'] = $solicitud['MutualProductoSolicitud']['inicia_en'];
         $datos['solicitud_primer_vto'] = $solicitud['MutualProductoSolicitud']['primer_vto_socio'];
-        $datos['solicitud_primer_vto'] = $solicitud['MutualProductoSolicitud']['primer_vto_socio'];
         $datos['solicitud_codigo_forma_pago'] = $solicitud['MutualProductoSolicitud']['forma_pago'];
         $datos['solicitud_codigo_forma_pago_descripcion'] = utf8_encode($solicitud['MutualProductoSolicitud']['forma_pago_desc']);
         $datos['solicitud_barcode'] = $solicitud['MutualProductoSolicitud']['barcode'];
         $datos['solicitud_saldo'] = $saldo;
+        $datos['solicitud_pendiente_acreditar'] = $pendienteAcreditar;
         $datos['beneficiario_tdocndoc'] = $solicitud['MutualProductoSolicitud']['beneficiario_tdocndoc'];
         $datos['beneficiario_apenom'] = utf8_encode($solicitud['MutualProductoSolicitud']['beneficiario_apenom']);
         $datos['beneficiario_domicilio'] = utf8_encode($solicitud['MutualProductoSolicitud']['beneficiario_domicilio']);

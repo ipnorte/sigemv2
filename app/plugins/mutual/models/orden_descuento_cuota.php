@@ -2759,7 +2759,7 @@ class OrdenDescuentoCuota extends MutualAppModel{
                 ,FX_ORDENDTO_PAGO_ACUMULADO($orden_dto_id,'$periodo','CAN') as pago_cancelacion 
                 ,FX_ORDENDTO_PAGO_ACUMULADO($orden_dto_id,'$periodo','LIQ') as pago_liquidacion
                 ,FX_ORDENDTO_PAGO_ACUMULADO($orden_dto_id,'$periodo','CAJ') as pago_caja    
-                ,FX_ORDENDTO_PENDIENTE_ACREDITAR($orden_dto_id,'$periodo') as pendiente_acreditar 
+                ,FX_ORDENDTO_PENDIENTE_ACREDITAR($orden_dto_id) as pendiente_acreditar 
                 ,FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO($orden_dto_id,'$periodo',0,999) AS saldo_vencido
                 ,FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO($orden_dto_id,'$periodo',0,3) AS saldo_0003
                 ,FX_ORDENDTO_SALDO_VENCIDO_POR_RANGO($orden_dto_id,'$periodo',3,6) AS saldo_0306
