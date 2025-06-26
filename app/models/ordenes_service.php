@@ -452,25 +452,25 @@ class OrdenesService extends SIGEMService{
     private function armaDatoSolicitud($solicitud, $saldo = 0, $pendienteAcreditar = 0){
 
         $datos = array();
-        $datos['solicitud_numero'] = $solicitud['MutualProductoSolicitud']['id'];
+        $datos['solicitud_numero'] = (int) $solicitud['MutualProductoSolicitud']['id'];
         $datos['solicitud_fecha'] = $solicitud['MutualProductoSolicitud']['fecha'];
         $datos['solicitud_fecha_pago'] = $solicitud['MutualProductoSolicitud']['fecha_pago'];
         $datos['solicitud_codigo_estado'] = substr($solicitud['MutualProductoSolicitud']['estado'],-4);
         $datos['solicitud_codigo_estado_descripcion'] = utf8_encode($solicitud['MutualProductoSolicitud']['estado_desc']);
         $datos['solicitud_codigo_producto'] = substr($solicitud['MutualProductoSolicitud']['tipo_producto'],-4);
         $datos['solicitud_codigo_producto_descripcion'] = utf8_encode($solicitud['MutualProductoSolicitud']['producto']);
-        $datos['solicitud_importe_total'] = $solicitud['MutualProductoSolicitud']['importe_total'];
-        $datos['solicitud_cuotas'] = $solicitud['MutualProductoSolicitud']['cuotas'];
-        $datos['solicitud_importe_cuota'] = $solicitud['MutualProductoSolicitud']['importe_cuota'];
-        $datos['solicitud_importe_solicitado'] = $solicitud['MutualProductoSolicitud']['importe_solicitado'];
-        $datos['solicitud_importe_percibido'] = $solicitud['MutualProductoSolicitud']['importe_percibido'];
+        $datos['solicitud_importe_total'] = (float) $solicitud['MutualProductoSolicitud']['importe_total'];
+        $datos['solicitud_cuotas'] = (int) $solicitud['MutualProductoSolicitud']['cuotas'];
+        $datos['solicitud_importe_cuota'] = (float) $solicitud['MutualProductoSolicitud']['importe_cuota'];
+        $datos['solicitud_importe_solicitado'] = (float) $solicitud['MutualProductoSolicitud']['importe_solicitado'];
+        $datos['solicitud_importe_percibido'] = (float) $solicitud['MutualProductoSolicitud']['importe_percibido'];
         $datos['solicitud_inicia_en'] = $solicitud['MutualProductoSolicitud']['inicia_en'];
         $datos['solicitud_primer_vto'] = $solicitud['MutualProductoSolicitud']['primer_vto_socio'];
         $datos['solicitud_codigo_forma_pago'] = $solicitud['MutualProductoSolicitud']['forma_pago'];
         $datos['solicitud_codigo_forma_pago_descripcion'] = utf8_encode($solicitud['MutualProductoSolicitud']['forma_pago_desc']);
         $datos['solicitud_barcode'] = $solicitud['MutualProductoSolicitud']['barcode'];
-        $datos['solicitud_saldo'] = $saldo;
-        $datos['solicitud_pendiente_acreditar'] = $pendienteAcreditar;
+        $datos['solicitud_saldo'] = (float) $saldo;
+        $datos['solicitud_pendiente_acreditar'] = (float) $pendienteAcreditar;
         $datos['beneficiario_tdocndoc'] = $solicitud['MutualProductoSolicitud']['beneficiario_tdocndoc'];
         $datos['beneficiario_apenom'] = utf8_encode($solicitud['MutualProductoSolicitud']['beneficiario_apenom']);
         $datos['beneficiario_domicilio'] = utf8_encode($solicitud['MutualProductoSolicitud']['beneficiario_domicilio']);
@@ -490,9 +490,9 @@ class OrdenesService extends SIGEMService{
         $datos['beneficio_nro_beneficio'] = $solicitud['MutualProductoSolicitud']['beneficio_cjpc_nro'];
         $datos['vendedor_cuit'] = $solicitud['MutualProductoSolicitud']['vendedor_cuit'];
         $datos['vendedor_datos'] = utf8_encode($solicitud['MutualProductoSolicitud']['vendedor_nombre']);
-        $datos['proveedor_plan_id'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_id'];
+        $datos['proveedor_plan_id'] = (int) $solicitud['MutualProductoSolicitud']['proveedor_plan_id'];
         $datos['proveedor_plan_descripcion'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_descripcion'];
-        $datos['proveedor_plan_status'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_activo'];
+        $datos['proveedor_plan_status'] = (int) $solicitud['MutualProductoSolicitud']['proveedor_plan_activo'];
         $datos['proveedor_plan_producto'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_producto'];
         $datos['proveedor_plan_producto_descripcion'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_producto_descripcion'];
         $datos['proveedor_plan_string'] = $solicitud['MutualProductoSolicitud']['proveedor_plan_string'];
@@ -503,11 +503,11 @@ class OrdenesService extends SIGEMService{
         if(!empty($cancelaciones)) {
             foreach ($cancelaciones as $key => $value) {
                 array_push($datos['solicitud_cancelaciones'], array(
-                    'orden_cancelacion' => $value['co']['id'],
+                    'orden_cancelacion' => (int) $value['co']['id'],
                     'proveedor' => utf8_encode($value['p']['razon_social']),
                     'referencia' => utf8_encode($value['co']['concepto']),
-                    'importe_cancela' => $value['co']['importe_proveedor'],
-                    'solicitud' => $value['o']['mutual_producto_solicitud_id'],
+                    'importe_cancela' => (float) $value['co']['importe_proveedor'],
+                    'solicitud' => (int) $value['o']['mutual_producto_solicitud_id'],
                     'cuota_nro' => $value[0]['cuotas'],
                 ));
             }
