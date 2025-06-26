@@ -253,40 +253,40 @@ class OrdenesService extends SIGEMService{
 
                 $detallePagos2 = array_map(function ($pago) use ($oCUOTA){
                     return [
-                        'cobro' =>  $pago['co']['id'],
+                        'cobro' =>  (int) $pago['co']['id'],
                         'fecha_imputacion' => $pago['co']['fecha'],
                         'tipo_cobro' => $pago[0]['tipo_cobro'],
                         'concepto' => $pago['gd']['concepto'],
                         'periodo_cobro' => $oCUOTA->periodo($pago['co']['periodo_cobro']),
-                        'importe_cobrado' => $pago['cdc']['importe'],
+                        'importe_cobrado' => (float) $pago['cdc']['importe'],
                     ];
                 }, $detallePagos);
                 
                 $cuotas[$n]['nro_referencia_proveedor'] = $dato['cu']['nro_referencia_proveedor'];
-                $cuotas[$n]['orden_descuento'] = $dato['o']['id'];
+                $cuotas[$n]['orden_descuento'] = (int) $dato['o']['id'];
                 $cuotas[$n]['tipo'] = $dato['o']['tipo_orden_dto'];
-                $cuotas[$n]['solicitud'] = $dato['o']['numero'];
+                $cuotas[$n]['solicitud'] = (int) $dato['o']['numero'];
                 $cuotas[$n]['producto'] = $dato['prod']['concepto_1'];
                 $cuotas[$n]['concepto'] = $dato['tcuo']['concepto_1'];
                 $cuotas[$n]['periodo'] = $oCUOTA->periodo($dato['cu']['periodo']);
-                $cuotas[$n]['cuota'] = $dato[0]['cuota'];
-                $cuotas[$n]['importe'] = $dato['cu']['importe'];
-                $cuotas[$n]['pagos'] = $dato[0]['pagos'];
-                $cuotas[$n]['saldo_conciliado'] = $dato[0]['saldo_conciliado'];
-                $cuotas[$n]['pendiente_acreditar'] = $dato[0]['pendiente_acreditar'];
-                $cuotas[$n]['saldo_aconciliar'] = $dato[0]['saldo_aconciliar'];
+                $cuotas[$n]['cuota'] = (int) $dato[0]['cuota'];
+                $cuotas[$n]['importe'] = (float) $dato['cu']['importe'];
+                $cuotas[$n]['pagos'] = (float) $dato[0]['pagos'];
+                $cuotas[$n]['saldo_conciliado'] = (float) $dato[0]['saldo_conciliado'];
+                $cuotas[$n]['pendiente_acreditar'] = (float) $dato[0]['pendiente_acreditar'];
+                $cuotas[$n]['saldo_aconciliar'] = (float) $dato[0]['saldo_aconciliar'];
                 
                 $saldoConciliadoAcumulado += $dato[0]['saldo_conciliado'];
                 $saldoAcumulado += $dato[0]['saldo_aconciliar'];
-                $cuotas[$n]['saldo_conciliado_acumulado'] = $saldoConciliadoAcumulado;
-                $cuotas[$n]['saldo_aconciliar_acumulado'] = $saldoAcumulado;                
+                $cuotas[$n]['saldo_conciliado_acumulado'] = (float) $saldoConciliadoAcumulado;
+                $cuotas[$n]['saldo_aconciliar_acumulado'] = (float) $saldoAcumulado;                
                 
                 $cuotas[$n]['banco'] = $dato['ba']['nombre'];
                 $cuotas[$n]['cbu'] = $dato['b']['cbu'];
                 $cuotas[$n]['nro_cta'] = $dato['b']['nro_cta_bco'];
                 $cuotas[$n]['sucursal'] = $dato['b']['nro_sucursal'];
                 $cuotas[$n]['empresa'] = $dato['emp']['concepto_1'];
-                $cuotas[$n]['acuerdo_debito'] = $dato[0]['acuerdo_debito'];
+                $cuotas[$n]['acuerdo_debito'] = (float) $dato[0]['acuerdo_debito'];
                 $cuotas[$n]['detalle_pagos'] = $detallePagos2;
                 
                 
@@ -355,7 +355,7 @@ class OrdenesService extends SIGEMService{
                 array_push($personaSTD->novedades, $novedad);
                 
                 $novedadSET = array(
-                    'numero' => $value['PersonaNovedad']['id'],
+                    'numero' => (int) $value['PersonaNovedad']['id'],
                     'fecha' => $value['PersonaNovedad']['created'],
                     'usuario' => $value['PersonaNovedad']['user_created'],
                     'descripcion' => $value['PersonaNovedad']['descripcion'],
