@@ -18,7 +18,6 @@ require 'PHPMailer/src/SMTP.php';
 
 
 class SMTPMailer extends \PHPMailer\PHPMailer\PHPMailer{
-    //put your code here
     public $INI_FILE;
     public function __construct() {
         parent::__construct(true);
@@ -31,11 +30,22 @@ class SMTPMailer extends \PHPMailer\PHPMailer\PHPMailer{
         $this->Username = $INI_FILE['general']['php_mailer_user'];
         $this->Password = $INI_FILE['general']['php_mailer_pass'];
         $this->Port = $INI_FILE['general']['php_mailer_pop3_port'];
-        $this->SMTPSecure = true;
+        $this->SMTPSecure = isset($INI_FILE['general']['php_mailer_smtp_secure']) ? $INI_FILE['general']['php_mailer_smtp_secure'] : 'ssl'; // Debe ser 'tls' o 'ssl'
+        $this->SMTPAutoTLS = ($this->SMTPSecure === 'ssl') ? false : true;
+        $this->CharSet = 'UTF-8';
+        $this->SMTPOptions = array(
+          'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true,
+          )
+        );        
+        
         $FROM = (isset($INI_FILE['general']['php_mailer_from']) ? $INI_FILE['general']['php_mailer_from'] : $INI_FILE['general']['php_mailer_user']);
         $this->setFrom($FROM,$INI_FILE['general']['nombre_fantasia']);
         $this->setLanguage('es', '/PHPMailer/language/');
         $this->SMTPDebug = 1;
+
     }
     
     public function sendEmailBlankPassword($userEmail,$userNick,$userDescrip){
@@ -98,22 +108,9 @@ class SMTPMailer extends \PHPMailer\PHPMailer\PHPMailer{
                     <p>" . $this->INI_FILE['general']['nombre_fantasia'] . " - ".Configure::read('APLICACION.nombre'). " @v" . Configure::read('APLICACION.version')."</p>
                     <p>Registrado desde: $remoteIP ($remoteDNS)</p>
                     ";         
-        
-//        $mensaje = "<p><strong>BLANQUEO DE CLAVE :: PIN</strong></p>";
-//        $mensaje .= "<table><tr><td>USUARIO</td><td><strong>" . trim($userNick) . "</strong></td></tr><tr><td>CLAVE TEMPORAL</td><td><strong>" . trim($userNick) . "</strong></td></tr></table>";
-//        $mensaje .= "<p></p>";
-//        $mensaje .= "<p>PIN: <h3>$PIN</h3></p>";
-//        $mensaje .= "<p></p>";
-//        $mensaje .= "<p>Su IP: $remoteIP ($remoteDNS)</p>";
-//        $mensaje .= "<p>*** NO RESPONDA ESTE CORREO ***</p>";
-        
         $this->Body = $mensaje;
         $this->addAddress($userEmail);
         $this->send();        
     }
-    
-    
-    
-    
     
 }

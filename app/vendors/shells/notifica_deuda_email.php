@@ -48,48 +48,46 @@ CREATE TABLE notificacion_socios (
  
 */
 
-App::import('Vendor', 'Mailer', array('file' => 'brevo/Mailer.php'));
+// App::import('Vendor', 'Mailer', array('file' => 'brevo/Mailer.php'));
+
+App::import('Vendor','SMTPMailer',array('file' => 'SMTPMailer.php')); 
 
 class NotificaDeudaEmailShell extends Shell {
 
-    function main() {
-        
+function main() {
         $pid = $this->args[0];
 
         $asinc = &ClassRegistry::init(array('class' => 'Shells.Asincrono','alias' => 'Asincrono'));
         $asinc->id = $pid;
-        
+
         $periodo = $asinc->getParametro('p1');
         $codigoNotificacion = $asinc->getParametro('p2');
         $userCreated = $asinc->getParametro('p3');
-        
+
         $asinc->actualizar(1,100,"ESPERE, INICIANDO PROCESO...");
-        
+
         App::import('Model', 'mutual.LiquidacionCuota');
         $OLC = new LiquidacionCuota();
-        
+
         App::import('Model', 'mutual.Notificacion');
         $oNOTI = new Notificacion();        
-        
+
         $global = $oNOTI->GlobalDato('texto_1',$codigoNotificacion);
-        
+
         if(!$global) {
             $asinc->actualizar(99,100,"ERROR DE CONFIGURACION!");
             sleep(4);
             $asinc->fin("**** ERROR DE CONFIGURACION! ****");             
             return;
         }        
-        
+
         $PARAMS = parse_ini_string(stripslashes(strip_tags(trim($global)))); 
-        
+
         $imgHost = $PARAMS['LOGO'];
-        $BREVO_API_KEY = $PARAMS['API_KEY'];
         $proveedor = $PARAMS['PROVEEDOR'];
         $contacto = $PARAMS['TELEFONO'];
         $alias = $PARAMS['ALIAS'];
-        $BREVO_API_PLANTILLA = intval($PARAMS['PLANTILLA']);          
-   
-        
+
         $sql = "select * from (
                 select p.documento, CONCAT(TRIM(p.apellido), ' ', trim(p.nombre)) apenom, LOWER(p.e_mail) email, od.mutual_producto_solicitud_id AS solicitud,
                 CONCAT(LPAD(odc.nro_cuota,2,0), '/', LPAD(od.cuotas,2,0)) cuota, odc.vencimiento, odc.periodo, tc.concepto_1 tipo_cuota
@@ -123,24 +121,23 @@ class NotificaDeudaEmailShell extends Shell {
                 GROUP BY odcc.orden_descuento_cuota_id) t on t.orden_descuento_cuota_id = odc.id
                 where odc.periodo < '$periodo' AND odc.estado <> 'B' AND IFNULL(p.e_mail, '') <> '' and odc.tipo_cuota not in ('MUTUTCUOGOTO', 'MUTUTCUOSELL')
                 HAVING saldo_cuota > 0) t 
-                WHERE t.documento = '30941361'
-                -- WHERE t.documento = '29512936'
+                -- WHERE t.documento = '30941361'
+                WHERE t.documento = '29512936'
                 -- WHERE t.documento = '24584946'
                 ORDER BY t.apenom, t.periodo, t.cuota;";
 
         $resultados = $OLC->query($sql);
-        
+
         if(empty($resultados)) {
             $asinc->actualizar(99,100,"SIN DATOS PARA PROCESAR!");
             sleep(4);
             $asinc->fin("**** SIN DATOS PARA PROCESAR ****");             
             return;
-        }        
+        }
 
         $total = count($resultados);
         $asinc->setTotal($total);
-        $i = 0;	         
-        // Agrupar por email
+        $i = 0;
         $socios = array();
         foreach ($resultados as $row) {
             $t = $row['t'];
@@ -152,46 +149,54 @@ class NotificaDeudaEmailShell extends Shell {
             $socios[$email]['calificacion'] = $t['calificacion'];
             $socios[$email]['socio_id'] = $t['socio_id'];
             $socios[$email]['datos'][] = $t;
-            $msg = "$i / $total -  Analizando Cuotas";
-            $asinc->actualizar($i,$total,$msg);            
+            $asinc->actualizar($i,$total,"$i / $total - Analizando Cuotas");
             $i++;
         }
 
-        $mailer = new Mailer($BREVO_API_KEY, $BREVO_API_PLANTILLA);
-        
+        $mailer = new SMTPMailer();
+        $mailer->isHTML(true);
+
         $asinc->actualizar(1,100,"INICIANDO ENVIO DE EMAILS...");
-        
         $total = count($socios);
         $asinc->setTotal($total);
         $i = 0;
-        
+
         $notificacion = [
             'periodo' => $periodo,
             'user_created' => $userCreated,
             'NotificacionSocio' => []
         ];
         $notificacionSocio = [];
-        foreach ($socios as $email => $info) {
-            
-            $nombre = $info['nombre'];
-            
-            $isStop = ($info['calificacion'] == 'MUTUCALISDEB' ? TRUE : FALSE);
-            
-            $params = $this->generarParamsDesdeDatosUnificados($info['datos'], $nombre, $periodo, $proveedor, $contacto, $alias, $isStop, $imgHost);
-            
-            // debug($params);
-            
-            try {
 
+        foreach ($socios as $email => $info) {
+            $nombre = $info['nombre'];
+            $isStop = ($info['calificacion'] == 'MUTUCALISDEB');
+
+            $params = $this->generarParamsDesdeDatosUnificados($info['datos'], $nombre, $periodo, $proveedor, $contacto, $alias, $isStop, $imgHost);
+
+            $template = file_get_contents(APP . 'vendors' . DS . 'shells' . DS . 'templates' . DS . 'deuda_unificada.html');
+            foreach ($params as $key => $value) {
+                $search = '{{ params.' . $key . ' }}';
+                $replace = (is_array($value) ? '' : $value);
+                $template = str_replace($search, $replace, $template);
+            }
+            $template = str_replace('{{ params.cuotas_completas }}', $params['cuotas_completas'], $template);
+            // Limpiar placeholders no reemplazados
+            $template = preg_replace('/{{\s*params\.[^}]+\s*}}/', '', $template);            
+
+            try {
+                
                 $email = 'm.adrian.torres@gmail.com';
-                // $email = 'lu1hiw@hotmail.com';
-                // $email = 'gestionxpres.sas@gmail.com';
-                // $email = 'eruizdaghero@gmail.com';
+                $email = 'lu1hiw@hotmail.com';
+                $email = 'm_atorres@hotmail.com';
                 
-                $status = $mailer->sendEmailTemplate($email, $nombre, $params);
-                
-                $msg = "$i / $total -  $nombre -> SEND  " . (!$status ? '[OK]' : '[ERROR]');
-                $asinc->actualizar($i,$total,$msg);
+                $mailer->clearAddresses();
+                $mailer->Subject = $params['subject'];
+                $mailer->Body = $template;
+                $mailer->addAddress($email, $nombre);
+                $status = !$mailer->send(); // false si OK
+
+                $asinc->actualizar($i,$total,"$i / $total - $nombre -> SEND " . ($status ? '[ERROR]' : '[OK]'));
                 $notificacionSocio[] = [
                     'socio_id' => $info['socio_id'],
                     'email' => $email,
@@ -201,36 +206,30 @@ class NotificaDeudaEmailShell extends Shell {
                     'detalle' => json_encode($params['detalle']),
                     'stop_debit' => $isStop,
                 ];
-                $i++;
-                // $this->out("✔️ Enviado a $nombre -> $email (Status: $status)");
             } catch (Exception $e) {
-
-                $msg = "$i / $total -  Error con $email: " . $e->getMessage();
-                $asinc->actualizar($i,$total,$msg);  
+                $asinc->actualizar($i,$total,"$i / $total - Error con $email: " . $e->getMessage());
                 return;
             }
-            sleep(3); // Espera entre envíos
-            
+            sleep(3);
+            $i++;
         }
 
-        
         try {
-            $notificacion['NotificacionSocio'] = $notificacionSocio; 
+            $notificacion['NotificacionSocio'] = $notificacionSocio;
             $oNOTI->borrarPorPeriodo($periodo);
             if(!$oNOTI->saveAll($notificacion)) {
                 throw new Exception("ERROR AL GUARDAR LA NOTIFICACION!");
             }
             $asinc->setValue('p3',$oNOTI->id);
             $asinc->actualizar(99,100,"FINALIZANDO...");
-            $asinc->fin("**** PROCESO FINALIZADO ****");                
+            $asinc->fin("**** PROCESO FINALIZADO ****");
             return;
         } catch (Exception $exc) {
             $msg = "Error: " . $exc->getMessage();
-            $asinc->actualizar(99,100,$msg);             
+            $asinc->actualizar(99,100,$msg);
             return;
         }
-      
-    }
+    }    
 
     
     function generarParamsDesdeDatosUnificados($datos, $nombre, $periodo, $proveedor, $contacto, $alias, $isStop = false, $imgHost) {
@@ -280,7 +279,7 @@ class NotificaDeudaEmailShell extends Shell {
 
         $periodoActual = $oUT->periodo($periodo);
         $nombreMayus = strtoupper($nombre);
-        $subject = '[NO REPLY] Estado de cuenta ' . $proveedor . ' c/ ' . $nombreMayus . ' - Actualización ' . $periodoActual;
+        $subject = '' . $proveedor . ' c/ ' . $nombreMayus . ' - Actualización ' . $periodoActual;
         
         $mensaje_whatsapp = 'Hola, soy *' . $nombreMayus . '*, me contacto por mi estado de cuenta en ' . $proveedor . ' a ' . $periodoActual . '.';
         $mensaje_whatsapp_utf8 = mb_convert_encoding($mensaje_whatsapp, 'UTF-8', 'auto');

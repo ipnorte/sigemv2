@@ -6,11 +6,34 @@ class TestingController extends AppController{
 	var $uses = null;
 
 	function beforeFilter(){
-		$this->Seguridad->allow('blank','demo','estilos','plan','vtos','test','gendisk','test_xls','backup','liquidador','desbloqueardocumentos','desbloquearliquidacion');
+		$this->Seguridad->allow('blank','demo','estilos','plan','vtos','test','gendisk','test_xls','backup','liquidador','desbloqueardocumentos','desbloquearliquidacion', 'testSMTPMailer');
 		parent::beforeFilter();
 	}
     
     function blank(){$this->render();}
+    
+    function testSMTPMailer() {
+        App::import('Vendor','SMTPMailer',array('file' => 'SMTPMailer.php')); // Ajustá el path si hiciste alias
+        try {
+            $mailer = new SMTPMailer();
+
+            $mailer->isHTML(true);
+            $mailer->Subject = "🧪 Test de envío SMTP desde CakePHP";
+            $mailer->Body = "<h3>¡Funciona!</h3><p>Este es un correo de prueba enviado desde <strong>CakePHP 1.2</strong> usando PHPMailer y configuración SMTP moderna.</p>";
+            $mailer->addAddress('m.adrian.torres@gmail.com'); // reemplazar por tu correo
+
+            if ($mailer->send()) {
+                echo "✅ Correo enviado correctamente.";
+            } else {
+                echo "❌ Falló el envío.";
+            }
+
+        } catch (Exception $e) {
+            echo "❌ Error al enviar: " . $e->getMessage();
+        }
+        exit;
+    }
+    
 
     function index(){exit;}
 
